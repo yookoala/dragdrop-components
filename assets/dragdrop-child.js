@@ -135,11 +135,9 @@ class DragDropChild extends HTMLElement {
                 && event.touches[0].pageY > boundRect.top && event.touches[0].pageY < boundRect.bottom
             ) {
                 if (this.#touchCurrentContainer !== container) {
-                    console.log('container found', container);
                     this.#touchCurrentContainer = container; // remember the container for touchmove.
                     container.dispatchEvent(new CustomEvent('dnd:dragenter', {bubbles: true}));
                 } else {
-                    console.log('drag over container', container);
                     container.dispatchEvent(new CustomEvent('dnd:dragover', {bubbles: true, detail: {
                         clientX: event.touches[0].clientX,
                         clientY: event.touches[0].clientY,
@@ -154,7 +152,6 @@ class DragDropChild extends HTMLElement {
     }
 
     onTouchEnd(event) {
-        console.log('touch end', event);
         this.removeAttribute('dragging'); // for container to know wich element is being dragged
         this.classList.remove('dragging'); // for styling
 
@@ -171,7 +168,6 @@ class DragDropChild extends HTMLElement {
             if (event.changedTouches[0].pageX > boundRect.left && event.changedTouches[0].pageX < boundRect.right
                 && event.changedTouches[0].pageY > boundRect.top && event.changedTouches[0].pageY < boundRect.bottom
             ) {
-                console.log('container found', container);
                 container.dispatchEvent(new CustomEvent('dnd:drop', {bubbles: true}));
             }
         }
