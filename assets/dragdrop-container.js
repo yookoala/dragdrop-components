@@ -48,8 +48,7 @@ class DragDropContainer extends HTMLElement {
     onDragOver(event) {
         event.preventDefault();
         event.stopPropagation();
-
-        const dragged = this.getDraggedElement(event.dataTransfer);
+        const dragged = this.getDraggedElement();
         if (!dragged) {
             return;
         }
