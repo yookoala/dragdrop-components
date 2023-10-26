@@ -56,6 +56,10 @@ class DragDropChild extends HTMLElement {
 
     #shadowRoot;
 
+    #touchShadowClass = null;
+    #touchShadow = null; // shadow for touch moves
+    #touchCurrentContainer = null; // container pointer for touchmove to dragover translation.
+
     constructor() {
         super();
         this.#shadowRoot = this.attachShadow({mode: 'closed'});
@@ -64,15 +68,116 @@ class DragDropChild extends HTMLElement {
     }
 
     connectedCallback() {
+        this.addEventListener("touchstart", this.onTouchStart, {passive: false});
+        this.addEventListener("touchend", this.onTouchEnd);
+        this.addEventListener("touchmove", this.onTouchMove);
         this.addEventListener("dragstart", this.onDragStart);
         this.addEventListener("dragend", this.onDragEnd);
     }
 
-    onDragStart(event) {
-        if (!event?.target?.id) {
-            console.error('no id on target for drag drop', event.target);
-            return;
+    onTouchStart(event) {
+        this.setAttribute('dragging', 'true'); // for container to know wich element is being dragged
+        this.classList.add('dragging'); // for styling
+        const boundRect = this.getBoundingClientRect();
+
+        if (this.#touchShadow) {
+            this.#touchShadow.remove();
+            this.#touchShadow = null;
         }
+        this.#touchShadow = document.createElement('div');
+
+        // Essential styles to make the shadow follow the touch.
+        this.#touchShadow.style.position = 'fixed';
+        this.#touchShadow.style.display = 'inline-block';
+        this.#touchShadow.style.width = boundRect.width;
+        this.#touchShadow.style.height = boundRect.height;
+        this.#touchShadow.style.top = boundRect.top;
+        this.#touchShadow.style.left = boundRect.left;
+        this.#touchShadow.style.pointerEvents = 'none';
+        this.#touchShadow.dataset.startPageX = boundRect.top;
+        this.#touchShadow.dataset.startPageY = boundRect.left;
+        this.#touchShadow.dataset.startTouchPageX = event.touches[0].pageX;
+        this.#touchShadow.dataset.startTouchPageY = event.touches[0].pageY;
+
+        // Athestic styles. If touch-shadow-class is set, the class will be added to the shadow.
+        // and all athestic styling will be skipped.
+        if (this.#touchShadowClass) {
+            this.#touchShadow.classList.add('touch-shadow');
+        } else {
+            this.#touchShadow.style.zIndex = 1000;
+            this.#touchShadow.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            this.#touchShadow.style.borderColor = 'rgba(255, 255, 255, 0.9)';
+            this.#touchShadow.style.borderStyle = 'solid';
+            this.#touchShadow.style.borderWidth = '1px';
+        }
+
+        // To make this work, the shadow must be appended to the document.
+        // Shadow DOM is not enough.
+        document.documentElement.appendChild(this.#touchShadow);
+    }
+
+    onTouchMove(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        if (this.#touchShadow) {
+            const deltaX = event.touches[0].pageX - this.#touchShadow.dataset.startTouchPageX;
+            const deltaY = event.touches[0].pageY - this.#touchShadow.dataset.startTouchPageY;
+            this.#touchShadow.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        }
+
+        // Find all the dragdrop containers on the page to check if the drag point is witnin
+        // bound of any of them.
+        const containers = document.querySelectorAll('dragdrop-container');
+        for (const container of containers) {
+            const boundRect = container.getBoundingClientRect();
+            if (event.touches[0].pageX > boundRect.left && event.touches[0].pageX < boundRect.right
+                && event.touches[0].pageY > boundRect.top && event.touches[0].pageY < boundRect.bottom
+            ) {
+                if (this.#touchCurrentContainer !== container) {
+                    console.log('container found', container);
+                    this.#touchCurrentContainer = container; // remember the container for touchmove.
+                    container.dispatchEvent(new CustomEvent('dnd:dragenter', {bubbles: true}));
+                } else {
+                    console.log('drag over container', container);
+                    container.dispatchEvent(new CustomEvent('dnd:dragover', {bubbles: true, detail: {
+                        clientX: event.touches[0].clientX,
+                        clientY: event.touches[0].clientY,
+                        pageX: event.touches[0].pageX,
+                        pageY: event.touches[0].pageY,
+                    }}));
+                }
+            } else {
+                container.dispatchEvent(new CustomEvent('dnd:dragleave', {bubbles: true}));
+            }
+        }
+    }
+
+    onTouchEnd(event) {
+        console.log('touch end', event);
+        this.removeAttribute('dragging'); // for container to know wich element is being dragged
+        this.classList.remove('dragging'); // for styling
+
+        // Clear simulation pointers.
+        this.#touchShadow.remove();
+        this.#touchShadow = null;
+        this.#touchCurrentContainer = null;
+
+        // Find all the dragdrop containers on the page to check if the drag point is witnin
+        // bound of any of them.
+        const containers = document.querySelectorAll('dragdrop-container');
+        for (const container of containers) {
+            const boundRect = container.getBoundingClientRect();
+            if (event.changedTouches[0].pageX > boundRect.left && event.changedTouches[0].pageX < boundRect.right
+                && event.changedTouches[0].pageY > boundRect.top && event.changedTouches[0].pageY < boundRect.bottom
+            ) {
+                console.log('container found', container);
+                container.dispatchEvent(new CustomEvent('dnd:drop', {bubbles: true}));
+            }
+        }
+    }
+
+    onDragStart(event) {
         this.setAttribute('dragging', 'true'); // for container to know wich element is being dragged
         event.target.classList.add('dragging'); // for styling
     }
@@ -127,6 +232,9 @@ class DragDropChild extends HTMLElement {
                     handle.classList.remove('bottom');
                     console.error('unknown position', newValue);
             }
+        }
+        if (name === 'touch-shadow-class') {
+            this.#touchShadowClass = (newValue) ? newValue : null;
         }
     }
 

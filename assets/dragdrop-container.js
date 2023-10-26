@@ -31,6 +31,13 @@ class DragDropContainer extends HTMLElement {
         // During and right after the drop on this container.
         this.addEventListener("dragover", this.onDragOver);
         this.addEventListener("drop", this.onDrop);
+
+        // Simulated event triggered by <dragdrop-child> when
+        // touched and dragged.
+        this.addEventListener("dnd:dragenter", this.onDragEnter);
+        this.addEventListener("dnd:dragleave", this.onDragLeave);
+        this.addEventListener("dnd:dragover", this.onDragOver);
+        this.addEventListener("dnd:drop", this.onDrop);
     }
 
     onDragEnter(event) {
@@ -52,7 +59,10 @@ class DragDropContainer extends HTMLElement {
         if (!dragged) {
             return;
         }
-        const closest = this.getDragBeforeElement(dragged, event.clientY);
+
+        // Use either the clientY or the detail.clientY value.
+        // Interoperable with both mouse and touch events.
+        const closest = this.getDragBeforeElement(dragged, event.clientY || event?.detail.clientY);
         if (closest.element) {
             closest.element.before(dragged);
             return;
