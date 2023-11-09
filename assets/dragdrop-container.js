@@ -70,7 +70,6 @@ class DragDropContainer extends HTMLElement {
         this.appendChild(dragged);
     }
 
-
     onDrop(event) {
         this.classList.remove('active');
         const dragged = this.getDraggedElement();

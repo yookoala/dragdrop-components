@@ -175,12 +175,12 @@ class DragDropChild extends HTMLElement {
 
     onDragStart(event) {
         this.setAttribute('dragging', 'true'); // for container to know wich element is being dragged
-        event.target.classList.add('dragging'); // for styling
+        this.classList.add('dragging'); // for styling
     }
 
     onDragEnd(event) {
         this.removeAttribute('dragging');
-        event.target.classList.remove('dragging');
+        this.classList.remove('dragging');
     }
 
     static get observedAttributes() {
