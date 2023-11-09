@@ -56,6 +56,7 @@ class DragDropChild extends HTMLElement {
 
     #shadowRoot;
 
+    #previousParent = null;
     #touchShadowClass = null;
     #touchShadow = null; // shadow for touch moves
     #touchCurrentContainer = null; // container pointer for touchmove to dragover translation.
@@ -79,6 +80,7 @@ class DragDropChild extends HTMLElement {
         this.setAttribute('dragging', 'true'); // for container to know wich element is being dragged
         this.classList.add('dragging'); // for styling
         const boundRect = this.getBoundingClientRect();
+        this.#previousParent = this.parentElement;
 
         if (this.#touchShadow) {
             this.#touchShadow.remove();
@@ -168,12 +170,20 @@ class DragDropChild extends HTMLElement {
             if (event.changedTouches[0].pageX > boundRect.left && event.changedTouches[0].pageX < boundRect.right
                 && event.changedTouches[0].pageY > boundRect.top && event.changedTouches[0].pageY < boundRect.bottom
             ) {
-                container.dispatchEvent(new CustomEvent('dnd:drop', {bubbles: true}));
+                if (container.canAcceptChild(this)) {
+                    container.dispatchEvent(new CustomEvent('dnd:drop', {bubbles: true}));
+                } else {
+                    this.#previousParent.appendChild(this);
+                }
             }
         }
+
+        // Clear previous parent.
+        this.#previousParent = null;
     }
 
     onDragStart(event) {
+        this.#previousParent = this.parentElement;
         this.setAttribute('dragging', 'true'); // for container to know wich element is being dragged
         this.classList.add('dragging'); // for styling
     }
@@ -181,6 +191,9 @@ class DragDropChild extends HTMLElement {
     onDragEnd(event) {
         this.removeAttribute('dragging');
         this.classList.remove('dragging');
+        if (!this.parentElement.canAcceptChild(this)) {
+            this.#previousParent.appendChild(this);
+        }
     }
 
     static get observedAttributes() {

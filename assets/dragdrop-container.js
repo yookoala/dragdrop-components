@@ -17,6 +17,8 @@ template.innerHTML = `
  */
 class DragDropContainer extends HTMLElement {
 
+    #maxChildren = -1;
+
     constructor() {
         super();
         this.attachShadow({mode: 'open'});
@@ -38,6 +40,10 @@ class DragDropContainer extends HTMLElement {
         this.addEventListener("dnd:dragleave", this.onDragLeave);
         this.addEventListener("dnd:dragover", this.onDragOver);
         this.addEventListener("dnd:drop", this.onDrop);
+    }
+
+    canAcceptChild(child) {
+        return (this.#maxChildren === -1 || this.children.length <= this.#maxChildren);
     }
 
     onDragEnter(event) {
@@ -125,6 +131,15 @@ class DragDropContainer extends HTMLElement {
         }, {offset: Number.NEGATIVE_INFINITY});
     }
 
+    static get observedAttributes() {
+        return ['max-children'];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'max-children') {
+            this.#maxChildren = Number.parseInt(newValue);
+        }
+    }
 }
 
 customElements.define('dragdrop-container', DragDropContainer);
