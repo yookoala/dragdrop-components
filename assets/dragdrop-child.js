@@ -159,7 +159,9 @@ class DragDropChild extends HTMLElement {
         this.classList.remove('dragging'); // for styling
 
         // Clear simulation pointers.
-        this.#touchShadow.remove();
+        if (this.#touchShadow && this.#touchShadow.parentNode) {
+            this.#touchShadow.remove();
+        }
         this.#touchShadow = null;
         this.#touchCurrentContainer = null;
 
