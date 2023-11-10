@@ -45,7 +45,7 @@ template.innerHTML = `
 }
 
 </style>
-<div part="handle" class="handle top left"></div>
+<div part="handle" class="handle full"></div>
 <slot><p>(Draggable)</p></slot>
 `;
 
@@ -225,19 +225,19 @@ class DragDropChild extends HTMLElement {
                     handle.classList.remove('top');
                     handle.classList.add('bottom');
                     break;
-                case 'full':
-                    handle.classList.add('full');
-                    handle.classList.remove('left');
-                    handle.classList.remove('right');
-                    handle.classList.remove('top');
-                    handle.classList.remove('bottom');
-                    break;
                 case 'top-left':
-                default:
                     handle.classList.remove('full');
                     handle.classList.add('left');
                     handle.classList.remove('right');
                     handle.classList.add('top');
+                    handle.classList.remove('bottom');
+                    break;
+                case 'full':
+                default:
+                    handle.classList.add('full');
+                    handle.classList.remove('left');
+                    handle.classList.remove('right');
+                    handle.classList.remove('top');
                     handle.classList.remove('bottom');
                     console.error('unknown position', newValue);
             }
