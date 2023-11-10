@@ -77,6 +77,7 @@ class DragDropChild extends HTMLElement {
     }
 
     onTouchStart(event) {
+        console.log('touch start here???');
         this.setAttribute('dragging', 'true'); // for container to know wich element is being dragged
         this.classList.add('dragging'); // for styling
         const boundRect = this.getBoundingClientRect();
@@ -183,6 +184,7 @@ class DragDropChild extends HTMLElement {
     }
 
     onDragStart(event) {
+        event.stopPropagation();
         this.#previousParent = this.parentElement;
         this.setAttribute('dragging', 'true'); // for container to know wich element is being dragged
         this.classList.add('dragging'); // for styling
