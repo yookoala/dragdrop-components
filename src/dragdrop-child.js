@@ -52,7 +52,7 @@ template.innerHTML = `
 /**
  * A draggable element.
  */
-class DragDropChild extends HTMLElement {
+export default class DragDropChild extends HTMLElement {
 
     #shadowRoot;
 

@@ -15,7 +15,7 @@ template.innerHTML = `
 /**
  * A container that can accept draggable elements.
  */
-class DragDropContainer extends HTMLElement {
+export default class DragDropContainer extends HTMLElement {
 
     #maxChildren = -1;
 
