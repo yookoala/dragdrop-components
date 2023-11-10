@@ -66,6 +66,12 @@ export default class DragDropContainer extends HTMLElement {
             return;
         }
 
+        if (dragged?.isAncestorOf(this)) {
+            // If the dragged item is an ancestor of this container,
+            // ignore the dragover event.
+            return;
+        }
+
         // Use either the clientY or the detail.clientY value.
         // Interoperable with both mouse and touch events.
         const closest = this.getDragBeforeElement(dragged, event.clientY || event?.detail.clientY);
@@ -84,6 +90,12 @@ export default class DragDropContainer extends HTMLElement {
         this.classList.remove('active');
         const dragged = this.getDraggedElement();
         if (!dragged) {
+            return;
+        }
+
+        if (dragged?.isAncestorOf(this)) {
+            // If the dragged item is an ancestor of this container,
+            // ignore the drop event.
             return;
         }
 
