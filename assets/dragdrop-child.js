@@ -140,7 +140,21 @@ class DragDropChild extends HTMLElement {
             if (event.touches[0].pageX > boundRect.left && event.touches[0].pageX < boundRect.right
                 && event.touches[0].pageY > boundRect.top && event.touches[0].pageY < boundRect.bottom
             ) {
-                enteredContainers.push(container);
+                // Check if this item is the ancestor of the container.
+                // (fix nesting container into child issue)
+                let isAncestor = false;
+                let parent = container.parentElement;
+                while (parent) {
+                    if (parent === this) {
+                        isAncestor = true;
+                        break;
+                    }
+                    parent = parent.parentElement;
+                }
+                if (!isAncestor) {
+                    // Only include containers that is not the ancestor of this item.
+                    enteredContainers.push(container);
+                }
             } else if (this.#touchCurrentContainer === container) {
                 // If the touch point is not within the container, but the container is the current
                 // container, then the touch point has left the container.
