@@ -77,7 +77,9 @@ class DragDropChild extends HTMLElement {
     }
 
     onTouchStart(event) {
-        console.log('touch start here???');
+        // Prevent touch start trigger on multiple nested child.
+        event.stopPropagation();
+
         this.setAttribute('dragging', 'true'); // for container to know wich element is being dragged
         this.classList.add('dragging'); // for styling
         const boundRect = this.getBoundingClientRect();
@@ -132,24 +134,41 @@ class DragDropChild extends HTMLElement {
         // Find all the dragdrop containers on the page to check if the drag point is witnin
         // bound of any of them.
         const containers = document.querySelectorAll('dragdrop-container');
+        const enteredContainers = [];
         for (const container of containers) {
             const boundRect = container.getBoundingClientRect();
             if (event.touches[0].pageX > boundRect.left && event.touches[0].pageX < boundRect.right
                 && event.touches[0].pageY > boundRect.top && event.touches[0].pageY < boundRect.bottom
             ) {
-                if (this.#touchCurrentContainer !== container) {
-                    this.#touchCurrentContainer = container; // remember the container for touchmove.
-                    container.dispatchEvent(new CustomEvent('dnd:dragenter', {bubbles: true}));
-                } else {
-                    container.dispatchEvent(new CustomEvent('dnd:dragover', {bubbles: true, detail: {
-                        clientX: event.touches[0].clientX,
-                        clientY: event.touches[0].clientY,
-                        pageX: event.touches[0].pageX,
-                        pageY: event.touches[0].pageY,
-                    }}));
+                enteredContainers.push(container);
+            } else if (this.#touchCurrentContainer === container) {
+                // If the touch point is not within the container, but the container is the current
+                // container, then the touch point has left the container.
+                this.#touchCurrentContainer.dispatchEvent(new CustomEvent('dnd:dragleave', {bubbles: true}));
+                this.#touchCurrentContainer = null;
+            }
+        }
+
+        if (enteredContainers.length > 0) {
+            // Find the inner most container
+            const innerMostContainer = enteredContainers.reduce((a, b) => {
+                const aBoundRect = a.getBoundingClientRect();
+                const bBoundRect = b.getBoundingClientRect();
+                if (aBoundRect.width * aBoundRect.height > bBoundRect.width * bBoundRect.height) {
+                    return b;
                 }
+                return a;
+            });
+            if (this.#touchCurrentContainer !== innerMostContainer) {
+                this.#touchCurrentContainer = innerMostContainer; // remember the container for touchmove.
+                innerMostContainer.dispatchEvent(new CustomEvent('dnd:dragenter', {bubbles: true}));
             } else {
-                container.dispatchEvent(new CustomEvent('dnd:dragleave', {bubbles: true}));
+                innerMostContainer.dispatchEvent(new CustomEvent('dnd:dragover', {bubbles: true, detail: {
+                    clientX: event.touches[0].clientX,
+                    clientY: event.touches[0].clientY,
+                    pageX: event.touches[0].pageX,
+                    pageY: event.touches[0].pageY,
+                }}));
             }
         }
     }
