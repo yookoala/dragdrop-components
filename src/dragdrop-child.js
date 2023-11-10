@@ -140,18 +140,7 @@ export default class DragDropChild extends HTMLElement {
             if (event.touches[0].pageX > boundRect.left && event.touches[0].pageX < boundRect.right
                 && event.touches[0].pageY > boundRect.top && event.touches[0].pageY < boundRect.bottom
             ) {
-                // Check if this item is the ancestor of the container.
-                // (fix nesting container into child issue)
-                let isAncestor = false;
-                let parent = container.parentElement;
-                while (parent) {
-                    if (parent === this) {
-                        isAncestor = true;
-                        break;
-                    }
-                    parent = parent.parentElement;
-                }
-                if (!isAncestor) {
+                if (!this.isAncestorOf(container)) {
                     // Only include containers that is not the ancestor of this item.
                     enteredContainers.push(container);
                 }
@@ -284,6 +273,22 @@ export default class DragDropChild extends HTMLElement {
         }
     }
 
+    /**
+     * Check if this child is the ancestor of the given element.
+     *
+     * @param {HTMLElement} element
+     * @returns
+     */
+    isAncestorOf(element) {
+        let parent = element.parentElement;
+        while (parent) {
+            if (parent === this) {
+                return true;
+            }
+            parent = parent.parentElement;
+        }
+        return false;
+    }
 }
 
 customElements.define('dragdrop-child', DragDropChild);
