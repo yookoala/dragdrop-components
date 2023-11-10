@@ -77,16 +77,25 @@ class DragDropContainer extends HTMLElement {
     }
 
     onDrop(event) {
+        // Only trigger the inner most container's onDrop.
+        event.stopPropagation();
+
+        // Clear the active style.
         this.classList.remove('active');
         const dragged = this.getDraggedElement();
         if (!dragged) {
             return;
         }
+
+        // Get the closest element after the drop point.
+        // Put the dropped element before that element.
         const closest = this.getDragBeforeElement(dragged, event.clientY);
         if (closest.element) {
             closest.element.before(dragged);
             return;
         }
+
+        // If nothing is before the drop point, put the dropped element at the end.
         this.appendChild(dragged);
     }
 
