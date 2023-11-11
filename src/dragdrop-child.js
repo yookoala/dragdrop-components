@@ -78,6 +78,28 @@ function createShadow({ width, height, top, left, className }) {
 }
 
 /**
+ * Calculate the real bound of an element relative to the page.
+ *
+ * @param {object|DOMRect} bound The boundaries of an element.
+ * @param {number} bound.top
+ * @param {number} bound.right
+ * @param {number} bound.bottom
+ * @param {number} bound.left
+ *
+ * @returns
+ */
+function getRealBound({ top, right, bottom, left, width, height }) {
+    return {
+        top: top + window.scrollY,
+        right: right + window.scrollX,
+        bottom: bottom + window.scrollY,
+        left: left + window.scrollX,
+        width,
+        height,
+    };
+}
+
+/**
  * A draggable element.
  */
 export default class DragDropChild extends HTMLElement {
@@ -111,6 +133,7 @@ export default class DragDropChild extends HTMLElement {
         this.setAttribute('dragging', 'true'); // for container to know wich element is being dragged
         this.classList.add('dragging'); // for styling
         const boundRect = this.getBoundingClientRect();
+        const realBoundRect = getRealBound(boundRect);
         this.#previousParent = this.parentElement;
 
         if (this.#touchShadow) {
@@ -122,10 +145,10 @@ export default class DragDropChild extends HTMLElement {
         this.#touchShadow = createShadow({
 
             // Boundaries of the element relative to viewport.
-            width: boundRect.width,
-            height: boundRect.height,
-            top: boundRect.top,
-            left: boundRect.left,
+            width: realBoundRect.width,
+            height: realBoundRect.height,
+            top: realBoundRect.top,
+            left: realBoundRect.left,
 
             // Athestic styles. If touch-shadow-class is set, the class will be added to the shadow.
             // and all athestic styling will be skipped.
@@ -156,7 +179,7 @@ export default class DragDropChild extends HTMLElement {
         const containers = document.querySelectorAll('dragdrop-container');
         const enteredContainers = [];
         for (const container of containers) {
-            const boundRect = container.getBoundingClientRect();
+            const boundRect = getRealBound(container.getBoundingClientRect());
             if (event.touches[0].pageX > boundRect.left && event.touches[0].pageX < boundRect.right
                 && event.touches[0].pageY > boundRect.top && event.touches[0].pageY < boundRect.bottom
             ) {
@@ -211,7 +234,7 @@ export default class DragDropChild extends HTMLElement {
         // bound of any of them.
         const containers = document.querySelectorAll('dragdrop-container');
         for (const container of containers) {
-            const boundRect = container.getBoundingClientRect();
+            const boundRect = getRealBound(container.getBoundingClientRect());
             if (event.changedTouches[0].pageX > boundRect.left && event.changedTouches[0].pageX < boundRect.right
                 && event.changedTouches[0].pageY > boundRect.top && event.changedTouches[0].pageY < boundRect.bottom
             ) {
@@ -285,7 +308,6 @@ export default class DragDropChild extends HTMLElement {
                     handle.classList.remove('right');
                     handle.classList.remove('top');
                     handle.classList.remove('bottom');
-                    console.error('unknown position', newValue);
             }
         }
         if (name === 'touch-shadow-class') {
