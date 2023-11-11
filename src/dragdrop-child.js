@@ -107,7 +107,7 @@ export default class DragDropChild extends HTMLElement {
         // Athestic styles. If touch-shadow-class is set, the class will be added to the shadow.
         // and all athestic styling will be skipped.
         if (this.#touchShadowClass) {
-            this.#touchShadow.classList.add('touch-shadow');
+            this.#touchShadow.classList.add(this.#touchShadowClass);
         } else {
             this.#touchShadow.style.zIndex = 1000;
             this.#touchShadow.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
