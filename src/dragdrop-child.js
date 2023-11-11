@@ -50,6 +50,34 @@ template.innerHTML = `
 `;
 
 /**
+ * Create a shadow element for touch move.
+ *
+ * @returns {HTMLElement}
+ */
+function createShadow({ width, height, top, left, className }) {
+    const el = document.createElement('div');
+    el.style.position = 'absolute';
+    el.style.display = 'inline-block';
+    el.style.width = width;
+    el.style.height = height;
+    el.style.top = top;
+    el.style.left = left;
+    el.style.pointerEvents = 'none';
+
+    if (className) {
+        el.classList.add(className);
+    } else {
+        el.style.zIndex = 1000;
+        el.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        el.style.borderColor = 'rgba(255, 255, 255, 0.9)';
+        el.style.borderStyle = 'solid';
+        el.style.borderWidth = '1px';
+    }
+
+    return el;
+}
+
+/**
  * A draggable element.
  */
 export default class DragDropChild extends HTMLElement {
