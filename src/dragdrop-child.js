@@ -117,32 +117,24 @@ export default class DragDropChild extends HTMLElement {
             this.#touchShadow.remove();
             this.#touchShadow = null;
         }
-        this.#touchShadow = document.createElement('div');
 
         // Essential styles to make the shadow follow the touch.
-        this.#touchShadow.style.position = 'fixed';
-        this.#touchShadow.style.display = 'inline-block';
-        this.#touchShadow.style.width = boundRect.width;
-        this.#touchShadow.style.height = boundRect.height;
-        this.#touchShadow.style.top = boundRect.top;
-        this.#touchShadow.style.left = boundRect.left;
-        this.#touchShadow.style.pointerEvents = 'none';
+        this.#touchShadow = createShadow({
+
+            // Boundaries of the element relative to viewport.
+            width: boundRect.width,
+            height: boundRect.height,
+            top: boundRect.top,
+            left: boundRect.left,
+
+            // Athestic styles. If touch-shadow-class is set, the class will be added to the shadow.
+            // and all athestic styling will be skipped.
+            className: this.#touchShadowClass || null,
+        });
         this.#touchShadow.dataset.startPageX = boundRect.top;
         this.#touchShadow.dataset.startPageY = boundRect.left;
         this.#touchShadow.dataset.startTouchPageX = event.touches[0].pageX;
         this.#touchShadow.dataset.startTouchPageY = event.touches[0].pageY;
-
-        // Athestic styles. If touch-shadow-class is set, the class will be added to the shadow.
-        // and all athestic styling will be skipped.
-        if (this.#touchShadowClass) {
-            this.#touchShadow.classList.add(this.#touchShadowClass);
-        } else {
-            this.#touchShadow.style.zIndex = 1000;
-            this.#touchShadow.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            this.#touchShadow.style.borderColor = 'rgba(255, 255, 255, 0.9)';
-            this.#touchShadow.style.borderStyle = 'solid';
-            this.#touchShadow.style.borderWidth = '1px';
-        }
 
         // To make this work, the shadow must be appended to the document.
         // Shadow DOM is not enough.
