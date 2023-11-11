@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/yookoala/dragdrop-components#readme",
   "devDependencies": {
-    "esbuild": "0.19.5"
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.9.0",
+    "esbuild": "0.19.5",
+    "serve": "^14.2.1"
   }
 }
