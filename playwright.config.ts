@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
+import net from 'net';
 
 /**
  * Read environment variables from file.
@@ -7,7 +8,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 // require('dotenv').config();
 
-const testServerAddress = '127.0.0.1:3000';
+const testServerAddress = `127.0.0.1:3100`;
 
 /**
  * @see https://playwright.dev/docs/test-configuration
