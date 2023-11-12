@@ -1,25 +1,23 @@
 // @ts-check
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 const { describe } = test;
 
 describe('Example Page', () => {
-  test('has title', async ({ page }) => {
+  test('loading into browser', async ({ page }) => {
     await page.goto('/example.html');
 
     // Expect a title "to contain" a substring.
     await expect(page).toHaveTitle(/Web Component Playground/);
-  });
 
-  test('has dragdrop-container', async ({ page }) => {
+    // Expect to find dragdrop container
     await page.goto('/example.html');
     const container = await page.evaluate(() => document.querySelector('dragdrop-container'));
     expect(container).not.toBeNull();
-  });
 
-  test('has dragdrop-child', async ({ page }) => {
+    // Expect to find dragdrop child
     await page.goto('/example.html');
-    const container = await page.evaluate(() => document.querySelector('dragdrop-child'));
-    expect(container).not.toBeNull();
+    const child = await page.evaluate(() => document.querySelector('dragdrop-child'));
+    expect(child).not.toBeNull();
   });
 });
 
