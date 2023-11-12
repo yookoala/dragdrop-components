@@ -5,5 +5,7 @@
 /dist/
 
 # Test generated files
-/playwright-report/
 /test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
