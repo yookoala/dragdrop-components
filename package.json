@@ -6,7 +6,7 @@
   "scripts": {
     "build": "esbuild ./src/index.js --format=esm --bundle --minify --outfile=./dist/dragdrop-components.mjs --target=chrome100,firefox100,safari15,edge100",
     "dev": "esbuild ./src/index.js --watch=forever --format=esm --bundle --sourcemap --outfile=./dist/dragdrop-components.mjs --target=chrome100,firefox100,safari15,edge100",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx playwright test"
   },
   "repository": {
     "type": "git",
