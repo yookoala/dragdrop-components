@@ -2,10 +2,12 @@
 import { test, expect } from '@playwright/test';
 const { describe } = test;
 
+test.beforeEach(async ({ page }) => {
+  await page.goto('/example.html');
+});
+
 describe('Example Page', () => {
   test('loading into browser', async ({ page }) => {
-    await page.goto('/example.html');
-
     // Expect a title "to contain" a substring.
     await expect(page).toHaveTitle(/Web Component Playground/);
 
@@ -26,8 +28,6 @@ describe('Simple drag drop', () => {
     retries: 2,
   });
   test('grab "Child 1" to the last container', async ({ page }, testInfo) => {
-    await page.goto('/example.html');
-
     let step = 0;
 
     // Identify the source and target containers.
