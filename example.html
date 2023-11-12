@@ -2,6 +2,9 @@
 <head>
 <title>Web Component Playground</title>
 <style>
+/**
+ * Generic styles
+ */
 * {
     box-sizing: border-box;
 }
@@ -11,6 +14,32 @@
     justify-content: center;
     align-items: center;
 }
+
+/**
+ * Make sure the elements are seen.
+ */
+dragdrop-container {
+    min-height: 2em;
+}
+dragdrop-child {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: #eee;
+}
+
+/**
+ * Layout code
+ */
+ .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    width: 900px;
+}
+
+/**
+ * Look and feel styles
+ */
 dragdrop-container {
     display: flex;
     flex-direction: column;
@@ -18,17 +47,6 @@ dragdrop-container {
     align-items: center;
     gap: 10px;
     padding: 10px;
-    aspect-ratio: 1/1;
-}
-.container > * {
-    margin: 0 auto;
-}
-.outer {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    gap: 10px;
-    width: 1200px;
 }
 dragdrop-container {
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -48,17 +66,32 @@ dragdrop-container:nth-child(5n+4) {
 dragdrop-container:nth-child(5n+5   ) {
     background-color: purple;
 }
-
-dragdrop-child {
+.hint {
+    background-color: rgba(216, 112, 147, 0.3);
+    font-size: 0.6em;
     width: 100%;
-    aspect-ratio: 1/1;
-    background-color: #eee;
+    padding: 1em;
+    min-height: 60px;
+    text-align: right;
+    aspect-ratio: none;
 }
+
+/**
+ * Make the nested dragdrop-container fills the parent (dragdrop-child).
+ */
+dragdrop-child {
+    display: flex;
+    flex-direction: column;
+}
+dragdrop-child > dragdrop-container {
+    flex: 1;
+}
+
 </style>
 <script type="module" src="./dist/dragdrop-components.mjs" defer></script>
 </head>
 <body>
-    <div class="outer">
+    <div class="grid">
         <dragdrop-container>
             <dragdrop-child class="center-contents">Child 1</dragdrop-child>
             <dragdrop-child handle="top-right" class="center-contents">Child 2</dragdrop-child>
@@ -66,7 +99,7 @@ dragdrop-child {
         </dragdrop-container>
         <dragdrop-container>
             <dragdrop-child handle="top-left">
-                <div style="background-color: rgba(216, 112, 147, 0.3); width: 100%; padding: 1em; text-align: right;">↓ Can drop here ↓</div>
+                <div class="hint">↓ Can drop here ↓</div>
                 <dragdrop-container style="background-color: palevioletred"></dragdrop-container>
             </dragdrop-child>
         </dragdrop-container>
