@@ -9,7 +9,7 @@ test.beforeEach(async ({ page }) => {
 describe('Example Page', () => {
   test('loading into browser', async ({ page }) => {
     // Expect a title "to contain" a substring.
-    await expect(page).toHaveTitle(/Web Component Playground/);
+    await expect(page).toHaveTitle(/Example 1: Kanban UI/);
 
     // Expect to find dragdrop container
     const container = await page.evaluate(() => document.querySelector('dragdrop-container'));
