@@ -6,7 +6,7 @@
   "scripts": {
     "build": "esbuild ./src/index.js --format=esm --bundle --minify --outfile=./dist/dragdrop-components.mjs --target=chrome100,firefox100,safari15,edge100",
     "dev": "esbuild ./src/index.js --watch=forever --format=esm --bundle --sourcemap --outfile=./dist/dragdrop-components.mjs --target=chrome100,firefox100,safari15,edge100",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx playwright test"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/yookoala/dragdrop-components#readme",
   "devDependencies": {
-    "esbuild": "0.19.5"
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.9.0",
+    "esbuild": "0.19.5",
+    "serve": "^14.2.1"
   }
 }

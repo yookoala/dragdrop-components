@@ -1,2 +1,11 @@
+# Node dependencies
 /node_modules/
+
+# Distribution generated result.
 /dist/
+
+# Test generated files
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
