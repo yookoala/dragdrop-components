@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const { describe } = test;
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/example.html');
+  await page.goto('/examples/example1.html');
 });
 
 describe('Example Page', () => {
@@ -12,12 +12,10 @@ describe('Example Page', () => {
     await expect(page).toHaveTitle(/Web Component Playground/);
 
     // Expect to find dragdrop container
-    await page.goto('/example.html');
     const container = await page.evaluate(() => document.querySelector('dragdrop-container'));
     expect(container).not.toBeNull();
 
     // Expect to find dragdrop child
-    await page.goto('/example.html');
     const child = await page.evaluate(() => document.querySelector('dragdrop-child'));
     expect(child).not.toBeNull();
   });
