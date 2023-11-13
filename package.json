@@ -2,10 +2,14 @@
   "name": "dragdrop-components",
   "version": "1.0.0",
   "description": "Simple Drag and Drop utility written as web components.",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "esbuild ./src/index.js --format=esm --bundle --minify --outfile=./dist/dragdrop-components.mjs --target=chrome100,firefox100,safari15,edge100",
-    "dev": "esbuild ./src/index.js --watch=forever --format=esm --bundle --sourcemap --outfile=./dist/dragdrop-components.mjs --target=chrome100,firefox100,safari15,edge100",
+    "build": "npm run build:bundle && npm run build:types",
+    "build:bundle": "esbuild ./src/index.js --format=esm --bundle --minify --outfile=./dist/index.js --target=chrome100,firefox100,safari15,edge100",
+    "build:types": "npx -p typescript tsc src/index.js --declaration --allowJs --emitDeclarationOnly --outDir dist",
+    "dev": "esbuild ./src/index.js --watch=forever --format=esm --bundle --sourcemap --outfile=./dist/index.js --target=chrome100,firefox100,safari15,edge100",
     "test": "npx playwright test"
   },
   "repository": {
@@ -22,6 +26,7 @@
     "@playwright/test": "^1.39.0",
     "@types/node": "^20.9.0",
     "esbuild": "0.19.5",
-    "serve": "^14.2.1"
+    "serve": "^14.2.1",
+    "typescript": "^5.2.2"
   }
 }
