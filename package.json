@@ -1,6 +1,6 @@
 {
   "name": "dragdrop-components",
-  "version": "1.0.0",
+  "version": "0.2.1",
   "description": "Simple Drag and Drop utility written as web components.",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -28,6 +28,13 @@
     "url": "https://github.com/yookoala/dragdrop-components/issues"
   },
   "homepage": "https://github.com/yookoala/dragdrop-components#readme",
+  "keywords": [
+    "custom element",
+    "component",
+    "web component",
+    "dragdrop",
+    "dom"
+  ],
   "devDependencies": {
     "@playwright/test": "^1.39.0",
     "@types/node": "^20.9.0",
