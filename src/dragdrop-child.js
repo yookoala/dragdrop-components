@@ -53,6 +53,13 @@ template.innerHTML = `
 /**
  * Create a shadow element for touch move.
  *
+ * @param {object} options
+ * @param {number} options.width
+ * @param {number} options.height
+ * @param {number} options.top
+ * @param {number} options.left
+ * @param {string|null} options.className
+ *
  * @returns {HTMLElement}
  */
 function createShadow({ width, height, top, left, className }) {
@@ -79,15 +86,21 @@ function createShadow({ width, height, top, left, className }) {
 }
 
 /**
+ * @typedef {object} Rect  The boundaries of an element.
+ * @property {number} top
+ * @property {number} right
+ * @property {number} bottom
+ * @property {number} left
+ * @property {number} width
+ * @property {number} height
+ */
+
+/**
  * Calculate the real bound of an element relative to the page.
  *
- * @param {object|DOMRect} bound The boundaries of an element.
- * @param {number} bound.top
- * @param {number} bound.right
- * @param {number} bound.bottom
- * @param {number} bound.left
+ * @param {Rect|DOMRect} bound The boundaries of an element.
  *
- * @returns
+ * @returns {Rect}
  */
 function getRealBound({ top, right, bottom, left, width, height }) {
     return {
