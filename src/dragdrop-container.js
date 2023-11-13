@@ -13,18 +13,25 @@ template.innerHTML = `
 `;
 
 /**
- * A container that can accept draggable elements.
+ * @class
+ * @classdesc A container that can accept draggable elements.
  */
 export default class DragDropContainer extends HTMLElement {
 
     #maxChildren = -1;
 
+    /**
+     * @constructor
+     */
     constructor() {
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(template.content.cloneNode(true));
     }
 
+    /**
+     * @override
+     */
     connectedCallback() {
         // When an element is dragged into or out of this container.
         this.addEventListener("dragenter", this.onDragEnter);
@@ -42,22 +49,46 @@ export default class DragDropContainer extends HTMLElement {
         this.addEventListener("dnd:drop", this.onDrop);
     }
 
+    /**
+     * Handler of the drag start event.
+     *
+     * @param {HTMLElement} child  The child to be dragged into this container.
+     * @returns {boolean}
+     */
     canAcceptChild(child) {
         return (this.#maxChildren === -1 || this.children.length <= this.#maxChildren);
     }
 
+    /**
+     * Handler of the drag enter event, or the emulated touch drag enter event.
+     *
+     * @param {MouseEvent|CustomEvent} event
+     * @returns {void}
+     */
     onDragEnter(event) {
         event.preventDefault();
         event.stopPropagation();
         this.classList.add('active');
     }
 
+    /**
+     * Handler of the drag leave event, or the emulated touch drag leave event.
+     *
+     * @param {MouseEvent|CustomEvent} event
+     * @returns {void}
+     */
     onDragLeave(event) {
         event.preventDefault();
         event.stopPropagation();
         this.classList.remove('active');
     }
 
+    /**
+     * Handler of the drag over event, or the emulated touch drag over event.
+     *
+     * @param {MouseEvent|CustomEvent} event
+     * @returns {void}
+     */
     onDragOver(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -82,6 +113,12 @@ export default class DragDropContainer extends HTMLElement {
         this.appendChild(dragged);
     }
 
+    /**
+     * Handler of the drop event, or the emulated touch drop event.
+     *
+     * @param {MouseEvent|CustomEvent} event
+     * @returns {void}
+     */
     onDrop(event) {
         // Only trigger the inner most container's onDrop.
         event.stopPropagation();
@@ -152,10 +189,22 @@ export default class DragDropContainer extends HTMLElement {
         }, {offset: Number.NEGATIVE_INFINITY});
     }
 
-    static get observedAttributes() {
+   /**
+     * Getter of the attributes.
+     *
+     * @override
+     */
+   static get observedAttributes() {
         return ['max-children'];
     }
 
+    /**
+     * @override
+     *
+     * @param {string} name
+     * @param {string} oldValue
+     * @param {string} newValue
+     */
     attributeChangedCallback(name, oldValue, newValue) {
         if (name === 'max-children') {
             this.#maxChildren = Number.parseInt(newValue);

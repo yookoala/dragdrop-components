@@ -101,7 +101,8 @@ function getRealBound({ top, right, bottom, left, width, height }) {
 }
 
 /**
- * A draggable element.
+ * @classdesc A draggable element.
+ * @class
  */
 export default class DragDropChild extends HTMLElement {
 
@@ -112,6 +113,9 @@ export default class DragDropChild extends HTMLElement {
     #touchShadow = null; // shadow for touch moves
     #touchCurrentContainer = null; // container pointer for touchmove to dragover translation.
 
+    /**
+     * @constructor
+     */
     constructor() {
         super();
         this.#shadowRoot = this.attachShadow({mode: 'closed'});
@@ -119,6 +123,9 @@ export default class DragDropChild extends HTMLElement {
         this.draggable = true;
     }
 
+    /**
+     * @override
+     */
     connectedCallback() {
         this.addEventListener("touchstart", this.onTouchStart, {passive: false});
         this.addEventListener("touchend", this.onTouchEnd);
@@ -127,6 +134,12 @@ export default class DragDropChild extends HTMLElement {
         this.addEventListener("dragend", this.onDragEnd);
     }
 
+    /**
+     * Handler of the touch start event.
+     *
+     * @param {TouchEvent} event
+     * @returns {void}
+     */
     onTouchStart(event) {
         // Prevent touch start trigger on multiple nested child.
         event.stopPropagation();
@@ -165,6 +178,12 @@ export default class DragDropChild extends HTMLElement {
         document.documentElement.appendChild(this.#touchShadow);
     }
 
+    /**
+     * Handler of the touch move event.
+     *
+     * @param {TouchEvent} event
+     * @returns {void}
+     */
     onTouchMove(event) {
         event.stopPropagation();
         event.preventDefault();
@@ -220,6 +239,12 @@ export default class DragDropChild extends HTMLElement {
         }
     }
 
+    /**
+     * Handler of the touch end event.
+     *
+     * @param {TouchEvent} event
+     * @returns {void}
+     */
     onTouchEnd(event) {
         this.removeAttribute('dragging'); // for container to know wich element is being dragged
         this.classList.remove('dragging'); // for styling
@@ -251,6 +276,12 @@ export default class DragDropChild extends HTMLElement {
         this.#previousParent = null;
     }
 
+    /**
+     * Handler of the drag start event.
+     *
+     * @param {MouseEvent} event
+     * @returns {void}
+     */
     onDragStart(event) {
         event.stopPropagation();
         this.#previousParent = this.parentElement;
@@ -258,6 +289,12 @@ export default class DragDropChild extends HTMLElement {
         this.classList.add('dragging'); // for styling
     }
 
+    /**
+     * Handler of the drag end event.
+     *
+     * @param {MouseEvent} event
+     * @returns {void}
+     */
     onDragEnd(event) {
         this.removeAttribute('dragging');
         this.classList.remove('dragging');
@@ -266,10 +303,22 @@ export default class DragDropChild extends HTMLElement {
         }
     }
 
+    /**
+     * Getter of the attributes.
+     *
+     * @override
+     */
     static get observedAttributes() {
         return ['handle'];
     }
 
+    /**
+     * @override
+     *
+     * @param {string} name
+     * @param {string} oldValue
+     * @param {string} newValue
+     */
     attributeChangedCallback(name, oldValue, newValue) {
         if (name === 'handle') {
             const handle = this.#shadowRoot.querySelector('.handle');
