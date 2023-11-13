@@ -5,6 +5,12 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "examples",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "build": "npm run build:bundle && npm run build:types",
     "build:bundle": "esbuild ./src/index.js --format=esm --bundle --minify --outfile=./dist/index.js --target=chrome100,firefox100,safari15,edge100",
