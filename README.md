@@ -1,10 +1,57 @@
-# Drag Drop Component
+# Drag Drop Components
 
-Web component to simplify drag-drop interface coding. Suitable for all UI that user drag and drop
+Web components to simplify drag-drop interface coding. Suitable for all UI that user drag and drop
 items from one container to another. Such as:
 
 1. Kanban-like UI: Drag and drop an item from one board to another.
 2. Board game: drag and drop pieces from one tile to another.
+
+## Structure
+
+There are 2 custom element defined by this library:
+
+* `<dragdrop-child>`
+  A div-like block element to be dragged arround and drop into containers.
+
+* `<dragdrop-container>`
+  A div-like block element to receive `<dragdrop-child>`.
+
+There is very little pre-defined CSS style to stand in the way. A simple
+Kanban applicaiton can be structured like this:
+
+```html
+<style>
+main {
+    display: flex;
+}
+dragdrop-container {
+    min-height: 3em; /** prevent empty container from disappearing */
+}
+dragdrop-child {
+    min-height: 3em; /** prevent empty child from disappearing */
+}
+</style>
+<main>
+    <section id="todo">
+        <h2>Todo</h2>
+        <dragdrop-container>
+            <dragdrop-child>
+                <h3>My Task</h3>
+            </dragdrop-child>
+        </dragdrop-container>
+    </section>
+    <section id="doing">
+        <h2>Doing</h2>
+        <dragdrop-container></dragdrop-container>
+    </section>
+    <section id="done">
+        <h2>Done</h2>
+        <dragdrop-container></dragdrop-container>
+    </section>
+</main>
+```
+
+More examples can be found in [examples](examples).
 
 ## Development
 
