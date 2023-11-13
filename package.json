@@ -28,6 +28,13 @@
     "url": "https://github.com/yookoala/dragdrop-components/issues"
   },
   "homepage": "https://github.com/yookoala/dragdrop-components#readme",
+  "keywords": [
+    "custom element",
+    "component",
+    "web component",
+    "dragdrop",
+    "dom"
+  ],
   "devDependencies": {
     "@playwright/test": "^1.39.0",
     "@types/node": "^20.9.0",
