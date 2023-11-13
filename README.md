@@ -14,7 +14,7 @@ built copy "dist/dragdrop-component.mjs" in this repository.
 
 ### Building the Library
 
-This command will build the "dist/dragdrop-component.mjs" file for distribution.
+This command will build the "dist/dragdrop-component.js" file for distribution.
 
 ```
 npm install
