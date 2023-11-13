@@ -6,15 +6,25 @@ items from one container to another. Such as:
 1. Kanban-like UI: Drag and drop an item from one board to another.
 2. Board game: drag and drop pieces from one tile to another.
 
-## Structure
+## How to Use
 
-There are 2 custom element defined by this library:
+Just include the script from jsdelivr.net:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/dragdrop-components" type="module"></script>
+```
+
+They you can use these 2 custom elements in your HTML:
 
 * `<dragdrop-child>`
   A div-like block element to be dragged arround and drop into containers.
 
 * `<dragdrop-container>`
   A div-like block element to receive `<dragdrop-child>`.
+
+No framework. Couldn't have been easier.
+
+### Simple Example
 
 There is very little pre-defined CSS style to stand in the way. A simple
 Kanban applicaiton can be structured like this:
@@ -25,9 +35,11 @@ main {
     display: flex;
 }
 dragdrop-container {
+    border: 1px solid #ddd;
     min-height: 3em; /** prevent empty container from disappearing */
 }
 dragdrop-child {
+    border: 1px solid #ddd;
     min-height: 3em; /** prevent empty child from disappearing */
 }
 </style>
