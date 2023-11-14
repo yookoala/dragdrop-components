@@ -7,7 +7,10 @@ import { TouchCoordinates, PageExtraTouchOptions } from './types';
  * @param {Page} page  The Playwright Page object
  * @param {'touchstart' | 'touchend' | 'touchcancel' | 'touchmove'} type  Touch event type string.
  * @param {string} selector  The selector string
- * @param {TouchCoordinates[]} touches  An array of touch coordinates relative to the page (include scroll offset).
+ * @param {TouchCoordinates[]} touches  A coordinates array of active touches relative to the page (include scroll offset).
+ * @param {TouchCoordinates[]} changedTouches  A coordinates array of touches relative to the page (include scroll offset).
+ *                                             Nature of the coordinates depends on the event type.
+ *                                             See: https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/changedTouches
  * @param {PageExtraTouchOptions} options  Extra options for initializing each Touch in the TouchEvent.
  */
 export async function dispatchTouchEvent(
@@ -15,6 +18,7 @@ export async function dispatchTouchEvent(
     type: 'touchstart' | 'touchend' | 'touchcancel' | 'touchmove',
     selector: string,
     touches: TouchCoordinates[],
+    changedTouches?: TouchCoordinates[],
     options?: PageExtraTouchOptions,
   ) {
     await page.$eval(
@@ -25,9 +29,11 @@ export async function dispatchTouchEvent(
         const {
           type,
           touches: touchCoordinates,
+          changedTouches: changedTouchCoordinates,
           options: touchOpt,
         } = options;
 
+        // Active touches.
         const touches = touchCoordinates.map(({pageX, pageY}: TouchCoordinates) => new Touch({
             identifier: Date.now(),
             target: el,
@@ -38,6 +44,24 @@ export async function dispatchTouchEvent(
             screenX: pageX - window.scrollX,
             screenY: pageY - window.scrollY,
         }));
+
+        // Depends on the event type, the changed touches may be different:
+        // See: https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/changedTouches
+        if (type === 'touchend' && !changedTouchCoordinates) {
+          throw new Error('Parameter `changedTouches` must be provided for `touchend` event.');
+        }
+        const changedTouches = changedTouchCoordinates
+          ? changedTouchCoordinates.map(({pageX, pageY}: TouchCoordinates) => new Touch({
+              identifier: Date.now(),
+              target: el,
+              pageX,
+              pageY,
+              clientX: pageX - rect.left,
+              clientY: pageY - rect.top,
+              screenX: pageX - window.scrollX,
+              screenY: pageY - window.scrollY,
+            }))
+          : touches;
 
         // if the touch is within the rect
         const targetTouches = touches.filter((touch) => (
@@ -51,12 +75,12 @@ export async function dispatchTouchEvent(
           bubbles: true,
           cancelable: true,
           ...touchOpt,
-          changedTouches: touches,
+          changedTouches,
           targetTouches,
           touches,
         });
         return el.dispatchEvent(touchEvent);
       },
-      { options, touches, type },
+      { options, touches, changedTouches, type },
     );
   }
