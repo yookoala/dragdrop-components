@@ -6,6 +6,18 @@ items from one container to another. Such as:
 1. Kanban-like UI: Drag and drop an item from one board to another.
 2. Board game: drag and drop pieces from one tile to another.
 
+- [Drag Drop Components](#drag-drop-components)
+  - [How to Use](#how-to-use)
+    - [HTML](#html)
+      - [Simple Example](#simple-example)
+    - [NodeJS](#nodejs)
+  - [Contribution](#contribution)
+    - [Building the Library](#building-the-library)
+    - [Development Mode](#development-mode)
+    - [Playwright Test](#playwright-test)
+    - [Report Issue and Contribution](#report-issue-and-contribution)
+  - [License](#license)
+
 ## How to Use
 
 ### HTML
