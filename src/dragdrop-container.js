@@ -61,10 +61,20 @@ export default class DragDropContainer extends HTMLElement {
      * Handler of the drag start event.
      *
      * @param {HTMLElement} child  The child to be dragged into this container.
+     * @param {boolean} alreadyChildren Whether the child is already a child of this container.
      * @returns {boolean}
      */
-    canAcceptChild(child) {
-        return (this.#maxChildren === -1 || this.children.length <= this.#maxChildren);
+    canAcceptChild(child, alreadyChildren = false) {
+        const childrenLength = alreadyChildren ? this.children.length - 1 : this.children.length;
+        const result = (
+            // The child cannot be the ancestor (i.e. nested parent)
+            // of this container.
+            (!child.isAncestorOf || !child.isAncestorOf(this)) &&
+
+            // The number of children cannot exceed the max-children attribute.
+            (this.#maxChildren === -1 || childrenLength < this.#maxChildren)
+        );
+        return result;
     }
 
     /**
@@ -105,8 +115,8 @@ export default class DragDropContainer extends HTMLElement {
             return;
         }
 
-        if (dragged?.isAncestorOf(this)) {
-            // If the dragged item is an ancestor of this container,
+        if (!this.canAcceptChild(dragged)) {
+            // If the dragged item cannot be accepted by this container,
             // ignore the dragover event.
             return;
         }
@@ -138,9 +148,10 @@ export default class DragDropContainer extends HTMLElement {
             return;
         }
 
-        if (dragged?.isAncestorOf(this)) {
+        if (!this.canAcceptChild(dragged, true)) {
             // If the dragged item is an ancestor of this container,
             // ignore the drop event.
+            dragged?.bounce(); // dragdrop-child supports bounce() method.
             return;
         }
 

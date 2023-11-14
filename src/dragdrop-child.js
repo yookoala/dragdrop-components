@@ -302,16 +302,24 @@ export default class DragDropChild extends HTMLElement {
             if (touch.pageX > boundRect.left && touch.pageX < boundRect.right
                 && touch.pageY > boundRect.top && touch.pageY < boundRect.bottom
             ) {
-                if (container.canAcceptChild(this)) {
-                    container.dispatchEvent(new CustomEvent('dnd:drop', {bubbles: true}));
-                } else {
-                    this.#previousParent.appendChild(this);
-                }
+                container.dispatchEvent(new CustomEvent('dnd:drop', {bubbles: true}));
             }
         }
 
         // Clear previous parent.
         this.#previousParent = null;
+    }
+
+    /**
+     * Bounce back to the previous parent.
+     *
+     * @returns {void}
+     */
+    bounce() {
+        if (this.#previousParent) {
+            this.#previousParent.appendChild(this);
+            this.#previousParent = null;
+        }
     }
 
     /**
@@ -336,9 +344,6 @@ export default class DragDropChild extends HTMLElement {
     onDragEnd(event) {
         this.removeAttribute('dragging');
         this.classList.remove('dragging');
-        if (!this.parentElement.canAcceptChild(this)) {
-            this.#previousParent.appendChild(this);
-        }
     }
 
     /**
@@ -407,7 +412,8 @@ export default class DragDropChild extends HTMLElement {
      * Check if this child is the ancestor of the given element.
      *
      * @param {HTMLElement} element
-     * @returns
+     *
+     * @returns {boolean}
      */
     isAncestorOf(element) {
         let parent = element.parentElement;
