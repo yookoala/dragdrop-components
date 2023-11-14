@@ -265,15 +265,14 @@ export default class DragDropChild extends HTMLElement {
             if (this.#touchCurrentContainer !== innerMostContainer) {
                 this.#touchCurrentContainer = innerMostContainer; // remember the container for touchmove.
                 innerMostContainer.dispatchEvent(new CustomEvent('dnd:dragenter', {bubbles: true}));
-            } else {
-                // Trigger drag over the innermost container.
-                innerMostContainer.dispatchEvent(new CustomEvent('dnd:dragover', {bubbles: true, detail: {
-                    clientX: touch.clientX,
-                    clientY: touch.clientY,
-                    pageX: touch.pageX,
-                    pageY: touch.pageY,
-                }}));
             }
+            // Trigger drag over the innermost container anyway.
+            innerMostContainer.dispatchEvent(new CustomEvent('dnd:dragover', {bubbles: true, detail: {
+                clientX: touch.clientX,
+                clientY: touch.clientY,
+                pageX: touch.pageX,
+                pageY: touch.pageY,
+            }}));
         }
     }
 
