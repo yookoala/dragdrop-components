@@ -69,7 +69,7 @@ More examples can be found in [examples](examples).
 
 The best way is to work or extend on the [examples](examples) along with proper
 [test cases](tests). All example depends on, and should always depend on, the
-built copy "dist/dragdrop-component.mjs" in this repository.
+built copy "dist/dragdrop-component.js" in this repository.
 
 ### Building the Library
 
