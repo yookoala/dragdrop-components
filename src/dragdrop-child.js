@@ -182,6 +182,7 @@ export default class DragDropChild extends HTMLElement {
         const boundRect = this.getBoundingClientRect();
         const realBoundRect = getRealBound(boundRect);
         this.#previousParent = this.parentElement;
+        const touch = event.touches[0];
 
         if (this.#touchShadow) {
             this.#touchShadow.remove();
@@ -203,8 +204,8 @@ export default class DragDropChild extends HTMLElement {
         });
         this.#touchShadow.dataset.startPageX = boundRect.top;
         this.#touchShadow.dataset.startPageY = boundRect.left;
-        this.#touchShadow.dataset.startTouchPageX = event.touches[0].pageX;
-        this.#touchShadow.dataset.startTouchPageY = event.touches[0].pageY;
+        this.#touchShadow.dataset.startTouchPageX = touch.pageX;
+        this.#touchShadow.dataset.startTouchPageY = touch.pageY;
 
         // To make this work, the shadow must be appended to the document.
         // Shadow DOM is not enough.
@@ -220,10 +221,11 @@ export default class DragDropChild extends HTMLElement {
     onTouchMove(event) {
         event.stopPropagation();
         event.preventDefault();
+        const touch = event.touches[0];
 
         if (this.#touchShadow) {
-            const deltaX = event.touches[0].pageX - this.#touchShadow.dataset.startTouchPageX;
-            const deltaY = event.touches[0].pageY - this.#touchShadow.dataset.startTouchPageY;
+            const deltaX = touch.pageX - this.#touchShadow.dataset.startTouchPageX;
+            const deltaY = touch.pageY - this.#touchShadow.dataset.startTouchPageY;
             this.#touchShadow.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
         }
 
@@ -233,8 +235,8 @@ export default class DragDropChild extends HTMLElement {
         const enteredContainers = [];
         for (const container of containers) {
             const boundRect = getRealBound(container.getBoundingClientRect());
-            if (event.touches[0].pageX > boundRect.left && event.touches[0].pageX < boundRect.right
-                && event.touches[0].pageY > boundRect.top && event.touches[0].pageY < boundRect.bottom
+            if (touch.pageX > boundRect.left && touch.pageX < boundRect.right
+                && touch.pageY > boundRect.top && touch.pageY < boundRect.bottom
             ) {
                 if (!this.isAncestorOf(container)) {
                     // Only include containers that is not the ancestor of this item.
@@ -258,15 +260,18 @@ export default class DragDropChild extends HTMLElement {
                 }
                 return a;
             });
+
+            // Trigger drag enter if the child has just entered this container.
             if (this.#touchCurrentContainer !== innerMostContainer) {
                 this.#touchCurrentContainer = innerMostContainer; // remember the container for touchmove.
                 innerMostContainer.dispatchEvent(new CustomEvent('dnd:dragenter', {bubbles: true}));
             } else {
+                // Trigger drag over the innermost container.
                 innerMostContainer.dispatchEvent(new CustomEvent('dnd:dragover', {bubbles: true, detail: {
-                    clientX: event.touches[0].clientX,
-                    clientY: event.touches[0].clientY,
-                    pageX: event.touches[0].pageX,
-                    pageY: event.touches[0].pageY,
+                    clientX: touch.clientX,
+                    clientY: touch.clientY,
+                    pageX: touch.pageX,
+                    pageY: touch.pageY,
                 }}));
             }
         }
@@ -281,6 +286,7 @@ export default class DragDropChild extends HTMLElement {
     onTouchEnd(event) {
         this.removeAttribute('dragging'); // for container to know wich element is being dragged
         this.classList.remove('dragging'); // for styling
+        const touch = event.touches[0];
 
         // Clear simulation pointers.
         if (this.#touchShadow && this.#touchShadow.parentNode) {
@@ -294,8 +300,8 @@ export default class DragDropChild extends HTMLElement {
         const containers = document.querySelectorAll('dragdrop-container');
         for (const container of containers) {
             const boundRect = getRealBound(container.getBoundingClientRect());
-            if (event.changedTouches[0].pageX > boundRect.left && event.changedTouches[0].pageX < boundRect.right
-                && event.changedTouches[0].pageY > boundRect.top && event.changedTouches[0].pageY < boundRect.bottom
+            if (touch.pageX > boundRect.left && touch.pageX < boundRect.right
+                && touch.pageY > boundRect.top && touch.pageY < boundRect.bottom
             ) {
                 if (container.canAcceptChild(this)) {
                     container.dispatchEvent(new CustomEvent('dnd:drop', {bubbles: true}));
