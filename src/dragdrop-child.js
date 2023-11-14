@@ -1,3 +1,11 @@
+/**
+ * @module
+ * @description A draggable element.
+ */
+
+/**
+ * @const {HTMLTemplateElement} template
+ */
 const template = document.createElement('template');
 template.innerHTML = `
 <style>
