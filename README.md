@@ -8,6 +8,8 @@ items from one container to another. Such as:
 
 ## How to Use
 
+### HTML
+
 Just include the script from jsdelivr.net:
 
 ```html
@@ -24,7 +26,7 @@ They you can use these 2 custom elements in your HTML:
 
 No framework. Couldn't have been easier.
 
-### Simple Example
+#### Simple Example
 
 There is very little pre-defined CSS style to stand in the way. A simple
 Kanban applicaiton can be structured like this:
@@ -65,7 +67,30 @@ dragdrop-child {
 
 More examples can be found in [examples](examples).
 
-## Development
+### NodeJS
+
+Install to your environment by:
+```shell
+npm install dragdrop-components
+```
+
+Use it on browser script:
+```js
+// For the side-effects.
+import 'dragdrop-components';
+
+// Then use like simple HTML element, for example.
+const container1 = document.createElement('dragdrop-container');
+const container2 = document.createElement('dragdrop-container');
+const child = document.createElement('dragdrop-child');
+container1.appendChild(child);
+document.documentElement.appendChild(container1);
+document.documentElement.appendChild(container2);
+```
+
+## Contribution
+
+You are very welcome to modify and backport changes here.
 
 The best way is to work or extend on the [examples](examples) along with proper
 [test cases](tests). All example depends on, and should always depend on, the
@@ -89,6 +114,16 @@ The source files will be monitored and built into the "dist" folder.
 npm install
 npm run dev
 ```
+
+### Playwright Test
+
+This library uses Playwright test for the dragdrop effect verifications. To
+prevent regression, please verify that your changes can pass Playwright tests.
+
+Playwright also provides very good support to VSCode's debugger. If you do not
+have a preferred editor, you're recommended to use [VSCode](https://playwright.dev/docs/getting-started-vscode)
+along with the [Playwright Test](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
+plugin.
 
 ### Report Issue and Contribution
 
