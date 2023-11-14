@@ -245,7 +245,7 @@ export default class DragDropChild extends HTMLElement {
     onTouchMove(event) {
         event.stopPropagation();
         event.preventDefault();
-        const touch = event.touches[0];
+        const touch = event.targetTouches[0];
 
         if (this.#touchShadow) {
             const deltaX = touch.pageX - this.#touchShadow.dataset.startTouchPageX;
