@@ -285,7 +285,7 @@ export default class DragDropChild extends HTMLElement {
     onTouchEnd(event) {
         this.removeAttribute('dragging'); // for container to know wich element is being dragged
         this.classList.remove('dragging'); // for styling
-        const touch = event.touches[0];
+        const touch = event.changedTouches[0];
 
         // Clear simulation pointers.
         if (this.#touchShadow && this.#touchShadow.parentNode) {
