@@ -383,6 +383,7 @@ describe('Touch drag drop', () => {
       'touchend',
       'dragdrop-child',
       [],
+      [],
       [{ pageX: 652, pageY: 75 }],
     );
 

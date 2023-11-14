@@ -8,6 +8,8 @@ import { TouchCoordinates, PageExtraTouchOptions } from './types';
  * @param {'touchstart' | 'touchend' | 'touchcancel' | 'touchmove'} type  Touch event type string.
  * @param {string} selector  The selector string
  * @param {TouchCoordinates[]} touches  A coordinates array of active touches relative to the page (include scroll offset).
+ * @param {TouchCoordinates[]} targetTouches  A coordinates array of touches relative to the page (include scroll offset).
+ *                                            These touches are considered touching the event target.
  * @param {TouchCoordinates[]} changedTouches  A coordinates array of touches relative to the page (include scroll offset).
  *                                             Nature of the coordinates depends on the event type.
  *                                             See: https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/changedTouches
@@ -18,6 +20,7 @@ export async function dispatchTouchEvent(
     type: 'touchstart' | 'touchend' | 'touchcancel' | 'touchmove',
     selector: string,
     touches: TouchCoordinates[],
+    targetTouches?: TouchCoordinates[],
     changedTouches?: TouchCoordinates[],
     options?: PageExtraTouchOptions,
   ) {
@@ -29,6 +32,7 @@ export async function dispatchTouchEvent(
         const {
           type,
           touches: touchCoordinates,
+          targetTouches: targetTouchCoordinates,
           changedTouches: changedTouchCoordinates,
           options: touchOpt,
         } = options;
@@ -44,6 +48,20 @@ export async function dispatchTouchEvent(
             screenX: pageX - window.scrollX,
             screenY: pageY - window.scrollY,
         }));
+
+        // Target touches. If not provided, use all the active touches.
+        const targetTouches = targetTouchCoordinates
+          ? targetTouchCoordinates.map(({pageX, pageY}: TouchCoordinates) => new Touch({
+              identifier: Date.now(),
+              target: el,
+              pageX,
+              pageY,
+              clientX: pageX - rect.left,
+              clientY: pageY - rect.top,
+              screenX: pageX - window.scrollX,
+              screenY: pageY - window.scrollY,
+            }))
+          : touches;
 
         // Depends on the event type, the changed touches may be different:
         // See: https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/changedTouches
@@ -63,14 +81,6 @@ export async function dispatchTouchEvent(
             }))
           : touches;
 
-        // if the touch is within the rect
-        const targetTouches = touches.filter((touch) => (
-          touch.clientX >= 0 &&
-          touch.clientX <= rect.width &&
-          touch.clientY >= 0 &&
-          touch.clientY <= rect.height
-        ));
-
         const touchEvent = new TouchEvent(type, {
           bubbles: true,
           cancelable: true,
@@ -81,6 +91,6 @@ export async function dispatchTouchEvent(
         });
         return el.dispatchEvent(touchEvent);
       },
-      { options, touches, changedTouches, type },
+      { options, touches, targetTouches, changedTouches, type },
     );
   }
