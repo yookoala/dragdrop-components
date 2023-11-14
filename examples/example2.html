@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Example 2: RPG Grid</title>
+<style>
+* {
+    box-sizing: border-box;
+}
+.center-contents {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.grid {
+    display: grid;
+    width: 900px;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10,  1fr);
+    gap: 10px;
+}
+dragdrop-container {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    aspect-ratio: 1/1;
+    padding: 4px;
+}
+dragdrop-container:nth-child(5n+1) {
+    background-color: red;
+}
+dragdrop-container:nth-child(5n+2) {
+    background-color: blue;
+}
+dragdrop-container:nth-child(5n+3) {
+    background-color: green;
+}
+dragdrop-container:nth-child(5n+4) {
+    background-color: yellow;
+}
+dragdrop-container:nth-child(5n+5   ) {
+    background-color: purple;
+}
+
+dragdrop-child {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: #eee;
+}
+</style>
+<script type="module" src="../dist/dragdrop-components.js"></script>
+</head>
+<body>
+    <div class="grid">
+        <dragdrop-container max-children="1">
+            <dragdrop-child class="center-contents">Child 1</dragdrop-child>
+        </dragdrop-container>
+        <dragdrop-container max-children="1">
+            <dragdrop-child class="center-contents">Child 2</dragdrop-child>
+        </dragdrop-container>
+        <dragdrop-container max-children="1">
+            <dragdrop-child class="center-contents">Child 3</dragdrop-child>
+        </dragdrop-container>
+        <dragdrop-container max-children="1">
+            <dragdrop-child class="center-contents">Child 4</dragdrop-child>
+        </dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+        <dragdrop-container max-children="1"></dragdrop-container>
+    </div>
+</body>
+</html>
