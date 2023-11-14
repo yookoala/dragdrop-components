@@ -74,10 +74,10 @@ function createShadow({ width, height, top, left, className }) {
     const el = document.createElement('div');
     el.style.position = 'absolute';
     el.style.display = 'inline-block';
-    el.style.width = width;
-    el.style.height = height;
-    el.style.top = top;
-    el.style.left = left;
+    el.style.width = `${width}px`;
+    el.style.height = `${height}px`;
+    el.style.top = `${top}px`;
+    el.style.left = `${left}px`;
     el.style.pointerEvents = 'none';
 
     if (className) {
