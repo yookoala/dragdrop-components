@@ -1,3 +1,11 @@
+/**
+ * @module
+ * @description A container that can accept dragdrop-child.
+ */
+
+/**
+ * @const {HTMLTemplateElement} template
+ */
 const template = document.createElement('template');
 template.innerHTML = `
 <style>
