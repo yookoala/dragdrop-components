@@ -7,7 +7,6 @@
   "types": "./dist/dragdrop-components.d.ts",
   "files": [
     "dist",
-    "examples",
     "LICENSE",
     "README.md"
   ],
