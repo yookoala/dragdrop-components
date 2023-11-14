@@ -95,6 +95,8 @@ function createShadow({ width, height, top, left, className }) {
 
 /**
  * @typedef {object} Rect  The boundaries of an element.
+ * @property {number} x
+ * @property {number} y
  * @property {number} top
  * @property {number} right
  * @property {number} bottom
@@ -106,12 +108,22 @@ function createShadow({ width, height, top, left, className }) {
 /**
  * Calculate the real bound of an element relative to the page.
  *
+ * Element.getBoundingClientRect() method only returns DOMRect object
+ * given information about the position of a rectangle relative to the
+ * viewport.
+ *
+ * This function calculates, from the DOMRect or equivlant Rect object,
+ * the real bound of the element relative to the page. That is to emilate
+ * the scrolling offsets.
+ *
  * @param {Rect|DOMRect} bound The boundaries of an element.
  *
  * @returns {Rect}
  */
-function getRealBound({ top, right, bottom, left, width, height }) {
+function getRealBound({ x, y, top, right, bottom, left, width, height }) {
     return {
+        x: x + window.scrollX,
+        y: y + window.scrollY,
         top: top + window.scrollY,
         right: right + window.scrollX,
         bottom: bottom + window.scrollY,
