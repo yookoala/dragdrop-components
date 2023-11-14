@@ -1,5 +1,7 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
+import { dispatchTouchEvent } from '@tests/helpers/dispatch-touch-event';
+
 const { describe } = test;
 
 test.beforeEach(async ({ page }) => {
@@ -327,5 +329,64 @@ describe('Nested drag drop', () => {
 
     const text = await nestedContainer.innerText();
     expect(text).toBe('Child 1\nChild 2');
+  });
+});
+
+describe('Touch drag drop', () => {
+  test.describe.configure({
+    retries: 2,
+  });
+
+  test('grab "Child 1" to the last container', async ({ page }, testInfo) => {
+    let step = 0;
+
+    // Identify the source and target containers.
+    // Check that the source has the text "Child 1" and the target doesn't.
+    const source = page.locator('.grid > dragdrop-container').first();
+    const destination = page.locator('.grid > dragdrop-container').last();
+    await expect(source).toContainText('Child 1');
+    await expect(destination).not.toContainText('Child 1');
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-setup.png` });
+
+    // Drag source to target.
+    const child = page.locator('dragdrop-child').nth(0);
+    expect(child).not.toBeNull();
+
+    await dispatchTouchEvent(
+      page,
+      'touchstart',
+      'dragdrop-child',
+      [{ pageX: 93, pageY: 96 }],
+    );
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-after-hover.png` });
+
+    // Drag to outside of the container.
+    await dispatchTouchEvent(
+      page,
+      'touchmove',
+      'dragdrop-child',
+      [{ pageX: 400, pageY: 400 }],
+    );
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-after-drag.png` });
+
+    // Drop on the target.
+    // Check the drop is successful.
+    await dispatchTouchEvent(
+      page,
+      'touchmove',
+      'dragdrop-child',
+      [{ pageX: 652, pageY: 75 }],
+    );
+
+    await dispatchTouchEvent(
+      page,
+      'touchend',
+      'dragdrop-child',
+      [{ pageX: 652, pageY: 75 }],
+    );
+
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-after-drop.png` });
+    await expect(source).not.toContainText('Child 1');
+    await expect(destination).toContainText('Child 1');
   });
 });
