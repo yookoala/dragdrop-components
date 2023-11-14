@@ -3,6 +3,8 @@
  * @description A container that can accept dragdrop-child.
  */
 
+import DragDropChild from "./dragdrop-child";
+
 /**
  * @const {HTMLTemplateElement} template
  */
@@ -67,6 +69,9 @@ export default class DragDropContainer extends HTMLElement {
     canAcceptChild(child, alreadyChildren = false) {
         const childrenLength = alreadyChildren ? this.children.length - 1 : this.children.length;
         const result = (
+            // The child cannot be this container.
+            (child !== this) &&
+
             // The child cannot be the ancestor (i.e. nested parent)
             // of this container.
             (!child.isAncestorOf || !child.isAncestorOf(this)) &&
@@ -110,7 +115,12 @@ export default class DragDropContainer extends HTMLElement {
     onDragOver(event) {
         event.preventDefault();
         event.stopPropagation();
-        const dragged = this.getDraggedElement();
+
+        // Note
+        // 1. dragover event will provide the dragged element as event.target.
+        // 2. dnd:dragover will provide the container as event.target (because it is
+        //    dispatched against the container) with dragged element as event.detail.target.
+        const dragged = event?.detail?.target || this.getDraggedElement();
         if (!dragged) {
             return;
         }
@@ -123,7 +133,7 @@ export default class DragDropContainer extends HTMLElement {
 
         // Use either the clientY or the detail.clientY value.
         // Interoperable with both mouse and touch events.
-        const closest = this.getDragBeforeElement(dragged, event.clientY || event?.detail.clientY);
+        const closest = this.getDragBeforeElement(dragged, event?.detail?.clientY || event?.clientY);
         if (closest.element) {
             closest.element.before(dragged);
             return;
@@ -143,21 +153,26 @@ export default class DragDropContainer extends HTMLElement {
 
         // Clear the active style.
         this.classList.remove('active');
-        const dragged = this.getDraggedElement();
+
+        // Note
+        // 1. dragover event will provide the dragged element as event.target.
+        // 2. dnd:dragover will provide the container as event.target (because it is
+        //    dispatched against the container) with dragged element as event.detail.target.
+        const dragged = event?.detail?.target || this.getDraggedElement();
         if (!dragged) {
             return;
         }
 
         if (!this.canAcceptChild(dragged, true)) {
-            // If the dragged item is an ancestor of this container,
-            // ignore the drop event.
-            dragged?.bounce(); // dragdrop-child supports bounce() method.
+            if (dragged instanceof DragDropChild) {
+                dragged.bounce();
+            }
             return;
         }
 
         // Get the closest element after the drop point.
         // Put the dropped element before that element.
-        const closest = this.getDragBeforeElement(dragged, event.clientY);
+        const closest = this.getDragBeforeElement(dragged, event?.detail?.clientY || event?.clientY);
         if (closest.element) {
             closest.element.before(dragged);
             return;
