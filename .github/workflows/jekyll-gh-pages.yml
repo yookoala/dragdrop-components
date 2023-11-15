@@ -34,13 +34,16 @@ jobs:
         with:
           source: .
           destination: ./_site
-      - uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install dependencies
+      - name: Install Node Dependencies
         run: npm ci
-      - name: Build latest version
+      - name: Build dragdrop-components.js Distribuion Bundle
         run: npm run build
+      - name: Add Bundle to Artifact
+        run: cp -Rpdf ./dist/ ./_site/dist/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
 
