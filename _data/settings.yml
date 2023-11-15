@@ -1,0 +1,7 @@
+menu:
+  -
+    name: Home
+    url: ""
+  -
+    name: Examples
+    url: "examples"
