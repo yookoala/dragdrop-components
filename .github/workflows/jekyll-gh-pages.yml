@@ -36,6 +36,13 @@ jobs:
         with:
           source: .
           destination: ./_site
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Build latest version
+        run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
 
