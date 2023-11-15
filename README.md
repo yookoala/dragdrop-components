@@ -6,7 +6,7 @@ items from one container to another. Such as:
 1. Kanban-like UI: Drag and drop an item from one board to another.
 2. Board game: drag and drop pieces from one tile to another.
 
-[ci-url]: https://github.com/yookoala/dragdrop-components/actions?query=branch%3Amain
+[ci-url]: https://github.com/yookoala/dragdrop-components/actions?query=branch%3Amain+workflow%3APlaywright
 [ci-badge]: https://github.com/yookoala/dragdrop-components/actions/workflows/playwright.yml/badge.svg?branch=main
 
 - [Drag Drop Components](#drag-drop-components)
