@@ -7,7 +7,7 @@ items from one container to another. Such as:
 2. Board game: drag and drop pieces from one tile to another.
 
 [ci-url]: https://github.com/yookoala/dragdrop-components/actions?query=branch%3Amain
-[ci-badge]: https://github.com/yookoala/dragdrop-components/workflows/ci.yml/badge.svg?branch=main
+[ci-badge]: https://github.com/yookoala/dragdrop-components/workflows/playwright.yml/badge.svg?branch=main
 
 - [Drag Drop Components](#drag-drop-components)
   - [How to Use](#how-to-use)
