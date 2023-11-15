@@ -29,11 +29,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v3
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: .
-          destination: ./_site
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -42,10 +37,13 @@ jobs:
         run: npm ci
       - name: Build dragdrop-components.js Distribuion Bundle
         run: npm run build
-      - name: Add Bundle to Artifact
-        run: cp -Rpdf ./dist/ ./_site/dist/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: .
+          destination: ./_site
 
   # Deployment job
   deploy:
