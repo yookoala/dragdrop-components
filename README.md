@@ -6,10 +6,11 @@ items from one container to another. Such as:
 1. Kanban-like UI: Drag and drop an item from one board to another.
 2. Board game: drag and drop pieces from one tile to another.
 
-Live Examples: https://yookoala.github.io/dragdrop-components/examples/
+Live Examples: [https://yookoala.github.io/dragdrop-components/examples/][examples-url]
 
-[![CI test][ci-badge]][ci-url] [![NPM][npm-badge]][npm-url] ![npm-download-badge]
+[![CI test][ci-badge]][ci-url] [![NPM][npm-badge]][npm-url] [![Downloads][npm-download-badge]][npm-url]
 
+[examples-url]: https://yookoala.github.io/dragdrop-components/examples/
 [ci-url]: https://github.com/yookoala/dragdrop-components/actions?query=branch%3Amain+workflow%3APlaywright
 [ci-badge]: https://github.com/yookoala/dragdrop-components/actions/workflows/playwright.yml/badge.svg?branch=main
 [npm-url]: https://www.npmjs.com/package/dragdrop-components
@@ -28,6 +29,7 @@ Live Examples: https://yookoala.github.io/dragdrop-components/examples/
   - [Playwright Test](#playwright-test)
   - [Report Issue and Contribution](#report-issue-and-contribution)
 - [License](#license)
+---
 
 ## How to Use
 
