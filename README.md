@@ -1,10 +1,13 @@
-# Drag Drop Components
+# Drag Drop Components [![CI test][ci-badge]][ci-url]
 
 Web components to simplify drag-drop interface coding. Suitable for all UI that user drag and drop
 items from one container to another. Such as:
 
 1. Kanban-like UI: Drag and drop an item from one board to another.
 2. Board game: drag and drop pieces from one tile to another.
+
+[ci-url]: https://github.com/go-restit/restit/actions?query=branch%3Amain
+[ci-badge]: https://github.com/go-restit/restit/actions/workflows/ci.yml/badge.svg?branch=main
 
 - [Drag Drop Components](#drag-drop-components)
   - [How to Use](#how-to-use)
