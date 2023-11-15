@@ -37,13 +37,13 @@ jobs:
         run: npm ci
       - name: Build dragdrop-components.js Distribuion Bundle
         run: npm run build
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: .
           destination: ./_site
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
 
   # Deployment job
   deploy:
