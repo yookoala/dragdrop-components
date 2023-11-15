@@ -21,7 +21,7 @@ and out of the nested item with ease.
 A grid structure where every cell can only accept 1 child. Suitable for board games
 UI and etc.
 
-* [Live Demo][example1-url]
+* [Live Demo][example2-url]
 * [Source Code][example2-src]
 
 [example2-url]: https://yookoala.github.io/dragdrop-components/examples/example2.html
