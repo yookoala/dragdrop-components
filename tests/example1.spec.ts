@@ -364,7 +364,7 @@ describe('Touch drag drop', () => {
     await dispatchTouchEvent(
       page,
       'touchmove',
-      'dragdrop-child',
+      'dragdrop-child[dragging=true]',
       [{ pageX: 400, pageY: 400 }],
     );
     await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-after-drag.png` });
@@ -374,14 +374,15 @@ describe('Touch drag drop', () => {
     await dispatchTouchEvent(
       page,
       'touchmove',
-      'dragdrop-child',
+      'dragdrop-child[dragging=true]',
       [{ pageX: 652, pageY: 75 }],
     );
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-after-drag.png` });
 
     await dispatchTouchEvent(
       page,
       'touchend',
-      'dragdrop-child',
+      'dragdrop-child[dragging=true]',
       [],
       [],
       [{ pageX: 652, pageY: 75 }],
