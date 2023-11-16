@@ -163,7 +163,7 @@ export default class DragDropContainer extends HTMLElement {
             return;
         }
 
-        if (!this.canAcceptChild(dragged, true)) {
+        if (!this.canAcceptChild(dragged, this.isAncestorOf(dragged))) {
             if (dragged instanceof DragDropChild) {
                 dragged.bounce();
             }
@@ -243,6 +243,24 @@ export default class DragDropContainer extends HTMLElement {
         if (name === 'max-children') {
             this.#maxChildren = Number.parseInt(newValue);
         }
+    }
+
+    /**
+     * Check if this child is the ancestor of the given element.
+     *
+     * @param {HTMLElement} element
+     *
+     * @returns {boolean}
+     */
+    isAncestorOf(element) {
+        let parent = element.parentElement;
+        while (parent) {
+            if (parent === this) {
+                return true;
+            }
+            parent = parent.parentElement;
+        }
+        return false;
     }
 }
 
