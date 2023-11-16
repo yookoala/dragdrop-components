@@ -16,6 +16,7 @@
     "build:bundle:min": "esbuild ./src/dragdrop-components.js --format=esm --bundle --minify --outfile=./dist/dragdrop-components.min.js --target=chrome100,firefox100,safari15,edge100",
     "build:types": "npx -p typescript tsc src/dragdrop-components.js --declaration --allowJs --emitDeclarationOnly --outDir dist",
     "dev": "esbuild ./src/dragdrop-components.js --watch=forever --format=esm --bundle --sourcemap --outfile=./dist/dragdrop-components.js --target=chrome100,firefox100,safari15,edge100",
+    "prepare": "npm run build",
     "test": "npx playwright test"
   },
   "repository": {
@@ -27,7 +28,7 @@
   "bugs": {
     "url": "https://github.com/yookoala/dragdrop-components/issues"
   },
-  "homepage": "https://github.com/yookoala/dragdrop-components#readme",
+  "homepage": "https://yookoala.github.io/dragdrop-components/",
   "keywords": [
     "custom element",
     "component",
