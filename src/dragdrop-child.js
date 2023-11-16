@@ -57,7 +57,28 @@ template.innerHTML = `
 }
 
 </style>
-<div part="handle" class="handle full"></div>
+<div part="handle" class="handle full">
+  <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+  <svg
+    style="width: 100%; height: auto; margin: 0 auto;"
+    width="100"
+    height="100"
+    viewBox="-1.5 -1.5 12.5 12.5"
+    version="1.1"
+    xml:space="preserve"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill="#000000"
+      fill-opacity="1"
+      stroke-width="0.0475"
+      stroke-linejoin="round"
+      d="M 1.6625,4.2750002 H 4.2750002 V 1.6625 h -1.1875 L 4.7500002,0 l 1.6625,1.6625 h -1.1875 V 4.2750002 H 7.8375 v -1.1875 L 9.5,4.7500002 7.8375,6.4125 V 5.225 H 5.2250002 v 2.6125 h 1.1875 l -1.6625,1.6625 -1.6625,-1.6625 h 1.1875 V 5.225 H 1.6625 V 6.4125 L 0,4.7500002 l 1.6625,-1.6625 z"
+      id="path1"
+    />
+  </svg>
+</div>
 <slot><p>(Draggable)</p></slot>
 `;
 
