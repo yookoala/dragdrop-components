@@ -1,6 +1,6 @@
 {
   "name": "dragdrop-components",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Simple Drag and Drop utility written as web components.",
   "main": "./dist/dragdrop-components.js",
   "module": "./dist/dragdrop-components.js",
