@@ -25,12 +25,15 @@ template.innerHTML = `
     height: 40px;
     outline: 1px solid black;
     background-color: rgba(0, 0, 0, 0.1);
-    cursor: move;
+    cursor: grab;
     transition: background-color 0.1s ease-in-out;
     z-index: 1000;
 }
 .handle:hover, :host(.active) .handle {
     background-color: rgba(0, 0, 0, 0.5);
+}
+.handle:active {
+  cursor: grabbing;
 }
 .handle.top {
     top: 10px;
