@@ -12,5 +12,8 @@ max_line_length = 0
 trim_trailing_whitespace = false
 indent_size = 2
 
+[*.yml]
+indent_size = 2
+
 [*.spec.ts]
 indent_size = 2
