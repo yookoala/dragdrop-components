@@ -3,10 +3,14 @@ root = true
 [*]
 indent_style = space
 end_of_line = lf
-indent_size = 2
+indent_size = 4
 charset = utf-8
 trim_trailing_whitespace = true
 
 [*.md]
 max_line_length = 0
 trim_trailing_whitespace = false
+indent_size = 2
+
+[*.spec.ts]
+indent_size = 2
