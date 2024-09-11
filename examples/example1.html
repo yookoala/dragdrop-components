@@ -88,18 +88,36 @@ dragdrop-child > dragdrop-container {
     min-height: 100px;
 }
 
+/**
+ * Admin bar, just for the sake of the example.
+ */
+#admin-bar {
+    position: absolute;
+    text-align: right;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.1);
+    left: 0;
+    bottom: 0;
+    padding: 1em 0.5em;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    button {
+        padding: 0.5em 1em;
+    }
+}
+
 </style>
 <script type="module" src="../dist/dragdrop-components.js" defer></script>
 </head>
 <body>
     <div class="grid">
         <dragdrop-container id="container-1">
-            <dragdrop-child class="center-contents">Child 1</dragdrop-child>
-            <dragdrop-child handle="top-right" class="center-contents">Child 2</dragdrop-child>
-            <dragdrop-child class="center-contents">Child 3</dragdrop-child>
+            <dragdrop-child id="child-1" class="center-contents">Child 1</dragdrop-child>
+            <dragdrop-child id="child-2" handle="top-right" class="center-contents">Child 2</dragdrop-child>
+            <dragdrop-child id="child-3" class="center-contents">Child 3</dragdrop-child>
         </dragdrop-container>
         <dragdrop-container id="container-2">
-            <dragdrop-child handle="top-left">
+            <dragdrop-child id="child-4" handle="top-left">
                 <div class="hint">↓ Can drop here ↓</div>
                 <dragdrop-container
                     id="container-2-child"
@@ -110,22 +128,52 @@ dragdrop-child > dragdrop-container {
         <dragdrop-container id="container-3"></dragdrop-container>
         <dragdrop-container id="container-4"></dragdrop-container>
     </div>
+    <aside id="admin-bar">
+        <button id="log-events">Log events</button>
+    </aside>
 <script type="module">
-document.getElementById('container-1').addEventListener('dnd:dropped', (event) => {
-    console.log('Container 1 receives', event.detail.child);
-});
-document.getElementById('container-2').addEventListener('dnd:dropped', (event) => {
-    console.log('Container 2 receives', event.detail.child);
-});
-document.getElementById('container-2-child').addEventListener('dnd:dropped', (event) => {
-    console.log('Container 2 child receives', event.detail.child);
-});
-document.getElementById('container-3').addEventListener('dnd:dropped', (event) => {
-    console.log('Container 3 receives', event.detail.child);
-});
-document.getElementById('container-4').addEventListener('dnd:dropped', (event) => {
-    console.log('Container 4 receives', event.detail.child);
-});
+
+/**
+ * Log all dropped events into the containers
+ */
+function logEvents(event) {
+    console.info('enable event logging');
+    event.target.disabled = true;
+
+    document.querySelectorAll('dragdrop-container').forEach((container) => {
+
+        // Event fires when a child element is dragged away from the container.
+        container.addEventListener('dnd:dragleave', (event) => {
+            console.debug(container.id, 'dragleave', event.detail.child.id);
+        });
+
+        // Event fires when a child element was dragged away but
+        // bounced back.
+        container.addEventListener('dnd:bounced', (event) => {
+            console.debug(container.id, 'bounced', event.detail.child.id);
+        });
+
+        // Event fires when a child element is dropped into the container.
+        container.addEventListener('dnd:dropped', (event) => {
+            console.debug(container.id, 'dropped', event.detail.child.id);
+        });
+    });
+
+    document.querySelectorAll('dragdrop-child').forEach((child) => {
+        // Event fires when a child element is dragged.
+        child.addEventListener('dnd:dragstart', (event) => {
+            console.debug(child.id, 'dragstart');
+        });
+
+        // Event fires when a dragged child element is released.
+        child.addEventListener('dnd:dragend', (event) => {
+            console.debug(child.id, 'dragend');
+        });
+    });
+}
+
+document.getElementById('log-events').addEventListener('click', logEvents);
+
 </script>
 </body>
 </html>
