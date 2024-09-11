@@ -108,9 +108,9 @@ export default class DragDropContainer extends HTMLElement {
         // Note
         // 1. dragover event does not identify the dragged element.
         //    use custom logic to find the dragged element.
-        // 2. dndtouch:dragleave will provide the container as event.target (because it is
-        //    dispatched against the container) with dragged element as event.detail.target.
-        const dragged = event?.detail?.target || this.getDraggedElement();
+        // 2. dndtouch:dragleave will provide the container as event.child (because it is
+        //    dispatched against the container) with dragged element as event.detail.child.
+        const dragged = event?.detail?.child || this.getDraggedElement();
         if (!dragged) {
             return;
         }
@@ -137,9 +137,9 @@ export default class DragDropContainer extends HTMLElement {
         // Note
         // 1. dragover event does not identify the dragged element.
         //    use custom logic to find the dragged element.
-        // 2. dndtouch:dragover will provide the container as event.target (because it is
-        //    dispatched against the container) with dragged element as event.detail.target.
-        const dragged = event?.detail?.target || this.getDraggedElement();
+        // 2. dndtouch:dragover will provide the container as event.child (because it is
+        //    dispatched against the container) with dragged element as event.detail.child.
+        const dragged = event?.detail?.child || this.getDraggedElement();
         if (!dragged) {
             return;
         }
@@ -174,10 +174,10 @@ export default class DragDropContainer extends HTMLElement {
         this.classList.remove('active');
 
         // Note
-        // 1. dragover event will provide the dragged element as event.target.
+        // 1. dragover event will provide the dragged element as event.child.
         // 2. dndtouch:dragover will provide the container as event.target (because it is
-        //    dispatched against the container) with dragged element as event.detail.target.
-        const dragged = event?.detail?.target || this.getDraggedElement();
+        //    dispatched against the container) with dragged element as event.detail.child.
+        const dragged = event?.detail?.child || this.getDraggedElement();
         if (!dragged) {
             return;
         }
