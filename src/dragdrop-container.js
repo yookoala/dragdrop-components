@@ -91,7 +91,34 @@ export default class DragDropContainer extends HTMLElement {
     onDragEnter(event) {
         event.preventDefault();
         event.stopPropagation();
+
+        // Note
+        // 1. dragover event does not identify the dragged element.
+        //    use custom logic to find the dragged element.
+        // 2. dndtouch:dragleave will provide the container as event.child (because it is
+        //    dispatched against the container) with dragged element as event.detail.child.
+        const dragged = event?.detail?.child || this.getDraggedElement();
+        if (!dragged) {
+            return;
+        }
+
+        if (!this.canAcceptChild(dragged)) {
+            // If the dragged item cannot be accepted by this container,
+            // ignore the dragenter event.
+            return;
+        }
+
+        // Indicate a child is dragged from this container.
         this.classList.add('active');
+
+        // Redundant class update. Listen to event once and clear the 'active'
+        // style.
+        //
+        // This is to prevent style problem with browser's dragleave event
+        // listener runs before dragenter (it happens).
+        dragged.addEventListener('dnd:dragend', () => {
+            this.classList.remove('active');
+        }, {once: true});
     }
 
     /**
@@ -103,6 +130,8 @@ export default class DragDropContainer extends HTMLElement {
     onDragLeave(event) {
         event.preventDefault();
         event.stopPropagation();
+
+        // Remove the active class to indicate the child left.
         this.classList.remove('active');
 
         // Note
