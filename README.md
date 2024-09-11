@@ -75,7 +75,7 @@ dragdrop-child {
     <section id="todo">
         <h2>Todo</h2>
         <dragdrop-container>
-            <dragdrop-child>
+            <dragdrop-child data-task-id="my-task-1">
                 <h3>My Task</h3>
             </dragdrop-child>
         </dragdrop-container>
@@ -89,6 +89,36 @@ dragdrop-child {
         <dragdrop-container></dragdrop-container>
     </section>
 </main>
+<script type="module">
+
+document.getElementById("todo").addEventListener(
+  "dnd:dropped",
+  function (event) {
+    const child = event.detail.child;
+    const taskId = child.dataset.taskId;
+    console.log('TODO: ', taskId);
+  },
+);
+
+document.getElementById("doing").addEventListener(
+  "dnd:dropped",
+  function (event) {
+    const child = event.detail.child;
+    const taskId = child.dataset.taskId;
+    console.log('DOING: ', taskId);
+  },
+);
+
+document.getElementById("done").addEventListener(
+  "dnd:dropped",
+  function (event) {
+    const child = event.detail.child;
+    const taskId = child.dataset.taskId;
+    console.log('DONE: ', taskId);
+  },
+);
+
+</script>
 ```
 
 More examples can be found in [examples](examples).

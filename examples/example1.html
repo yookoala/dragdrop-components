@@ -93,19 +93,39 @@ dragdrop-child > dragdrop-container {
 </head>
 <body>
     <div class="grid">
-        <dragdrop-container>
+        <dragdrop-container id="container-1">
             <dragdrop-child class="center-contents">Child 1</dragdrop-child>
             <dragdrop-child handle="top-right" class="center-contents">Child 2</dragdrop-child>
             <dragdrop-child class="center-contents">Child 3</dragdrop-child>
         </dragdrop-container>
-        <dragdrop-container>
+        <dragdrop-container id="container-2">
             <dragdrop-child handle="top-left">
                 <div class="hint">↓ Can drop here ↓</div>
-                <dragdrop-container style="background-color: palevioletred"></dragdrop-container>
+                <dragdrop-container
+                    id="container-2-child"
+                    style="background-color: palevioletred"
+                ></dragdrop-container>
             </dragdrop-child>
         </dragdrop-container>
-        <dragdrop-container></dragdrop-container>
-        <dragdrop-container></dragdrop-container>
+        <dragdrop-container id="container-3"></dragdrop-container>
+        <dragdrop-container id="container-4"></dragdrop-container>
     </div>
+<script type="module">
+document.getElementById('container-1').addEventListener('dnd:dropped', (event) => {
+    console.log('Container 1 receives', event.detail.child);
+});
+document.getElementById('container-2').addEventListener('dnd:dropped', (event) => {
+    console.log('Container 2 receives', event.detail.child);
+});
+document.getElementById('container-2-child').addEventListener('dnd:dropped', (event) => {
+    console.log('Container 2 child receives', event.detail.child);
+});
+document.getElementById('container-3').addEventListener('dnd:dropped', (event) => {
+    console.log('Container 3 receives', event.detail.child);
+});
+document.getElementById('container-4').addEventListener('dnd:dropped', (event) => {
+    console.log('Container 4 receives', event.detail.child);
+});
+</script>
 </body>
 </html>
