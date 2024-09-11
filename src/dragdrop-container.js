@@ -53,10 +53,10 @@ export default class DragDropContainer extends HTMLElement {
 
         // Simulated event triggered by <dragdrop-child> when
         // touched and dragged.
-        this.addEventListener("dnd:dragenter", this.onDragEnter);
-        this.addEventListener("dnd:dragleave", this.onDragLeave);
-        this.addEventListener("dnd:dragover", this.onDragOver);
-        this.addEventListener("dnd:drop", this.onDrop);
+        this.addEventListener("dndtouch:dragenter", this.onDragEnter);
+        this.addEventListener("dndtouch:dragleave", this.onDragLeave);
+        this.addEventListener("dndtouch:dragover", this.onDragOver);
+        this.addEventListener("dndtouch:drop", this.onDrop);
     }
 
     /**
@@ -118,7 +118,7 @@ export default class DragDropContainer extends HTMLElement {
 
         // Note
         // 1. dragover event will provide the dragged element as event.target.
-        // 2. dnd:dragover will provide the container as event.target (because it is
+        // 2. dndtouch:dragover will provide the container as event.target (because it is
         //    dispatched against the container) with dragged element as event.detail.target.
         const dragged = event?.detail?.target || this.getDraggedElement();
         if (!dragged) {
@@ -156,7 +156,7 @@ export default class DragDropContainer extends HTMLElement {
 
         // Note
         // 1. dragover event will provide the dragged element as event.target.
-        // 2. dnd:dragover will provide the container as event.target (because it is
+        // 2. dndtouch:dragover will provide the container as event.target (because it is
         //    dispatched against the container) with dragged element as event.detail.target.
         const dragged = event?.detail?.target || this.getDraggedElement();
         if (!dragged) {

@@ -276,7 +276,7 @@ export default class DragDropChild extends HTMLElement {
                 // If the touch point is not within the container, but the container is the current
                 // container, then the touch point has left the container.
                 this.#touchCurrentContainer.dispatchEvent(new CustomEvent(
-                    'dnd:dragleave',
+                    'dndtouch:dragleave',
                     {
                         bubbles: true,
                         detail: { target: this },
@@ -302,7 +302,7 @@ export default class DragDropChild extends HTMLElement {
             if (this.#touchCurrentContainer !== innerMostContainer) {
                 this.#touchCurrentContainer = innerMostContainer; // remember the container for touchmove.
                 innerMostContainer.dispatchEvent(new CustomEvent(
-                    'dnd:dragenter',
+                    'dndtouch:dragenter',
                     {
                         bubbles: true,
                         detail: {
@@ -317,7 +317,7 @@ export default class DragDropChild extends HTMLElement {
             }
             // Trigger drag over the innermost container anyway.
             innerMostContainer.dispatchEvent(new CustomEvent(
-                'dnd:dragover',
+                'dndtouch:dragover',
                 {
                     bubbles: true, detail: {
                         target: this,
@@ -381,7 +381,7 @@ export default class DragDropChild extends HTMLElement {
             if (this.#touchCurrentContainer !== innerMostContainer) {
                 this.#touchCurrentContainer = innerMostContainer; // remember the container for touchmove.
                 innerMostContainer.dispatchEvent(new CustomEvent(
-                    'dnd:drop',
+                    'dndtouch:drop',
                     {
                         bubbles: true,
                         detail: {
