@@ -408,6 +408,12 @@ export default class DragDropChild extends HTMLElement {
     bounce() {
         if (this.#previousParent) {
             this.#previousParent.appendChild(this);
+            this.#previousParent.dispatchEvent(new CustomEvent('dnd:bounced', {
+                bubbles: false,
+                detail: {
+                    child: this,
+                },
+            }));
             this.#previousParent = null;
         }
     }

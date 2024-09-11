@@ -104,6 +104,24 @@ export default class DragDropContainer extends HTMLElement {
         event.preventDefault();
         event.stopPropagation();
         this.classList.remove('active');
+
+        // Note
+        // 1. dragover event does not identify the dragged element.
+        //    use custom logic to find the dragged element.
+        // 2. dndtouch:dragleave will provide the container as event.target (because it is
+        //    dispatched against the container) with dragged element as event.detail.target.
+        const dragged = event?.detail?.target || this.getDraggedElement();
+        if (!dragged) {
+            return;
+        }
+
+        // Dispatch a custom event to notify the drag leave.
+        this.dispatchEvent(new CustomEvent('dnd:dragleave', {
+            bubbles: false,
+            detail: {
+              child: dragged,
+            },
+        }));
     }
 
     /**
@@ -117,7 +135,8 @@ export default class DragDropContainer extends HTMLElement {
         event.stopPropagation();
 
         // Note
-        // 1. dragover event will provide the dragged element as event.target.
+        // 1. dragover event does not identify the dragged element.
+        //    use custom logic to find the dragged element.
         // 2. dndtouch:dragover will provide the container as event.target (because it is
         //    dispatched against the container) with dragged element as event.detail.target.
         const dragged = event?.detail?.target || this.getDraggedElement();
@@ -170,21 +189,36 @@ export default class DragDropContainer extends HTMLElement {
             return;
         }
 
+        // Dispatch a custom event to notify the drop.
+        const droppedEvent = new CustomEvent('dnd:dropped', {
+            bubbles: false,
+            detail: {
+              child: dragged,
+            },
+        });
+
         // Get the closest element after the drop point.
         // Put the dropped element before that element.
         const closest = this.getDragBeforeElement(dragged, event?.detail?.clientY || event?.clientY);
         if (closest.element) {
             closest.element.before(dragged);
+            this.dispatchEvent(droppedEvent);
             return;
         }
 
         // If nothing is before the drop point, put the dropped element at the end.
         this.appendChild(dragged);
+        this.dispatchEvent(droppedEvent);
     }
 
     /**
      * Find the dragged element by looking for the element with
      * attribute `draggable=true` and `dragging=true`.
+     *
+     * This is to find the dragged element when the mouse dragover
+     * event triggered on the container. Assume only one mouse cursor
+     * exists on a device, only one element can be dragged at the
+     * same time.
      *
      * Note: <custom-child> elements will self-set `dragging=true`
      * on "dragstart" event. This is a bit of a hack, but it works.
