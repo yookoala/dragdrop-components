@@ -1,10 +1,5 @@
 name: Publish Package to npmjs
 on:
-  release:
-    types: [published]
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
   workflow_run:
     workflows: ["Playwright"]
     types:
@@ -13,6 +8,7 @@ on:
       - main
 jobs:
   build:
+    if: startsWith(github.event.workflow_run.head_commit.message, 'v') && contains(github.event.workflow_run.head_commit.message, '.')
     runs-on: ubuntu-latest
     permissions:
       contents: read
