@@ -236,6 +236,11 @@ export default class DragDropChild extends HTMLElement {
         // To make this work, the shadow must be appended to the document.
         // Shadow DOM is not enough.
         document.documentElement.appendChild(this.#touchShadow);
+
+        // Dispatch drag start event.
+        this.dispatchEvent(new CustomEvent('dnd:dragstart', {
+            bubbles: false,
+        }));
     }
 
     /**
@@ -396,6 +401,11 @@ export default class DragDropChild extends HTMLElement {
             }
         }
 
+        // Dispatch drag end event.
+        this.dispatchEvent(new CustomEvent('dnd:dragend', {
+            bubbles: false,
+        }));
+
         // Clear previous parent.
         this.#previousParent = null;
     }
@@ -429,6 +439,11 @@ export default class DragDropChild extends HTMLElement {
         this.#previousParent = this.parentElement;
         this.setAttribute('dragging', 'true'); // for container to know wich element is being dragged
         this.classList.add('dragging'); // for styling
+
+        // Dispatch drag start event.
+        this.dispatchEvent(new CustomEvent('dnd:dragstart', {
+            bubbles: false,
+        }));
     }
 
     /**
@@ -440,6 +455,11 @@ export default class DragDropChild extends HTMLElement {
     onDragEnd(event) {
         this.removeAttribute('dragging');
         this.classList.remove('dragging');
+
+        // Dispatch drag end event.
+        this.dispatchEvent(new CustomEvent('dnd:dragend', {
+            bubbles: false,
+        }));
     }
 
     /**
