@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 (no changes yet)
 
+## [0.3.1]
+
+### Changed
+- GitHub Workflows updates.
+
 ## [0.3]
 
 ### Changed
@@ -80,7 +85,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tests with playwright.
 - GitHub workflow to run CI tests.
 
-[Unreleased]: https://github.com/yookoala/dragdrop-components/compare/v0.3...HEAD
+[Unreleased]: https://github.com/yookoala/dragdrop-components/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/yookoala/dragdrop-components/compare/v0.3...v0.3.1
 [0.3]: https://github.com/yookoala/dragdrop-components/compare/v0.2.5...v0.3
 [0.2.5]: https://github.com/yookoala/dragdrop-components/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/yookoala/dragdrop-components/compare/v0.2.3...v0.2.4
