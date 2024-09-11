@@ -279,7 +279,7 @@ export default class DragDropChild extends HTMLElement {
                     'dndtouch:dragleave',
                     {
                         bubbles: true,
-                        detail: { target: this },
+                        detail: { child: this },
                     },
                 ));
                 this.#touchCurrentContainer = null;
@@ -306,7 +306,7 @@ export default class DragDropChild extends HTMLElement {
                     {
                         bubbles: true,
                         detail: {
-                            target: this,
+                            child: this,
                             clientX,
                             clientY,
                             pageX,
@@ -320,7 +320,7 @@ export default class DragDropChild extends HTMLElement {
                 'dndtouch:dragover',
                 {
                     bubbles: true, detail: {
-                        target: this,
+                        child: this,
                         clientX,
                         clientY,
                         pageX,
@@ -385,7 +385,7 @@ export default class DragDropChild extends HTMLElement {
                     {
                         bubbles: true,
                         detail: {
-                            target: this,
+                            child: this,
                             clientX,
                             clientY,
                             pageX,
