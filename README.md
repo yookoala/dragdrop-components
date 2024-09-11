@@ -23,6 +23,10 @@ Live Examples: [https://yookoala.github.io/dragdrop-components/examples/][exampl
   - [HTML](#html)
     - [Simple Example](#simple-example)
   - [NodeJS](#nodejs)
+- [API](#api)
+  - [Events](#events)
+    - [dragdrop-child](#dragdrop-child)
+    - [dragdrop-container](#dragdrop-container)
 - [Contribution](#contribution)
   - [Building the Library](#building-the-library)
   - [Development Mode](#development-mode)
@@ -143,6 +147,51 @@ container1.appendChild(child);
 document.documentElement.appendChild(container1);
 document.documentElement.appendChild(container2);
 ```
+
+## API
+
+### Events
+
+This library will fire a few custom events. The same event(s) will fire both
+with ordinary mouse drag-drop or touch drag-drop.
+
+#### dragdrop-child
+
+* `dnd:dragstart`
+  * Fires when a it is started being dragged (both using mouse or touch).
+  * Attributes
+    - target (HTMLElement): the dragdrop-child element.
+* `dnd:dragend`
+  * Fires when a it is released from drag (both using mouse or touch).
+  * Attributes
+    - target (HTMLElement): the dragdrop-child element.
+
+#### dragdrop-container
+
+* `dnd:dragleave`
+  * Fires when the dragdrop-child is dragging away from the container.
+  * Attributes
+    - target (HTMLElement): the dragdrop-container element.
+    - detail (Object)
+      with attribute:
+      - child (HTMLElement): the dragdrop-child element being dragged.
+
+* `dnd:bounced`
+  * Fires when a previously dragged-away dragdrop-child is rejected from the
+    destination container or otherwise being bounced back.
+  * Attributes
+    - target (HTMLElement): the dragdrop-container element.
+    - detail (Object)
+      with attribute:
+      - child (HTMLElement): the dragdrop-child element being dragged.
+
+* `dnd:dropped`
+  * Fires when a dragdrop-child is dropped on this container.
+  * Attributes
+    - target (HTMLElement): the dragdrop-container element.
+    - detail (Object)
+      with attribute:
+      - child (HTMLElement): the dragdrop-child element being dragged.
 
 ## Contribution
 
