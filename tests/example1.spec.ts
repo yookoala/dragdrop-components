@@ -393,3 +393,166 @@ describe('Touch drag drop', () => {
     await expect(destination).toContainText('Child 1');
   });
 });
+
+describe('Mouse drag and drop', () => {
+  test.describe.configure({
+    retries: 2,
+  });
+
+  test('life cycle triggers all dnd:* event as expected', async({ page }, testInfo) => {
+    // Make sure the indicator is created.
+    let step = 0;
+
+    page.evaluate(() => {
+      // Define all elements on the page
+      // Note: child4 contains container2child.
+      const child1 = document.getElementById('child-1');
+      const containerEventHandler = (event: CustomEvent) => {
+        // @ts-expect-error
+        console.log(event.target?.id || 'dragdrop-container', event.type, event.detail?.child?.id || 'dragdrop-child');
+      };
+      const childEventHandler = (event: CustomEvent) => {
+        // @ts-expect-error
+        console.log(event.target?.id || 'dragdrop-child', event.type);
+      };
+
+      document.querySelectorAll('dragdrop-child').forEach((child) => {
+        child.addEventListener('dnd:dragstart', childEventHandler);
+        child.addEventListener('dnd:dragend', childEventHandler);
+      });
+      document.querySelectorAll('dragdrop-container').forEach((container) => {
+        container.addEventListener('dnd:dragleave', containerEventHandler);
+        container.addEventListener('dnd:dropped', containerEventHandler);
+      });
+    });
+
+    // Capture all console logs for evaluation
+    const logPromises = [];
+    page.on('console', msg => logPromises.push(Promise.all(msg.args().map(arg => arg.jsonValue()))));
+
+    // Verify setup
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-setup.png` });
+
+    // Identify the source and target containers.
+    // Check that the source has the text "Child 1" and the target doesn't.
+    const source = page.locator('.grid > dragdrop-container').first();
+    const child1 = page.locator('dragdrop-child').nth(0);
+    await expect(source).toContainText('Child 1');
+
+    // Drag child1 from source to destination.
+    await child1.hover();
+    await page.mouse.down();
+    await page.mouse.move(10, 10);
+    await page.mouse.move(10, 400); // drag down
+    await page.mouse.move(600, 150); // drag onto the right-most item
+    await page.mouse.up();
+
+    const logs = await Promise.all(logPromises);
+    expect(logs.length).toEqual(4);
+    expect(logs[0]).toEqual(['child-1', 'dnd:dragstart']);
+    expect(logs[1]).toEqual(['container-1', 'dnd:dragleave', 'child-1']);
+    expect(logs[2]).toEqual(['container-4', 'dnd:dropped', 'child-1']);
+    expect(logs[3]).toEqual(['child-1', 'dnd:dragend']);
+  });
+});
+
+describe('Touch drag and drop', () => {
+  test.describe.configure({
+    retries: 2,
+  });
+
+  test('life cycle triggers all dnd:* event as expected', async({ page }, testInfo) => {
+    // Make sure the indicator is created.
+    let step = 0;
+
+    page.evaluate(() => {
+      // Define all elements on the page
+      // Note: child4 contains container2child.
+      const child1 = document.getElementById('child-1');
+      const containerEventHandler = (event: CustomEvent) => {
+        // @ts-expect-error
+        console.log(event.target?.id || 'dragdrop-container', event.type, event.detail?.child?.id || 'dragdrop-child');
+      };
+      const childEventHandler = (event: CustomEvent) => {
+        // @ts-expect-error
+        console.log(event.target?.id || 'dragdrop-child', event.type);
+      };
+
+      document.querySelectorAll('dragdrop-child').forEach((child) => {
+        child.addEventListener('dnd:dragstart', childEventHandler);
+        child.addEventListener('dnd:dragend', childEventHandler);
+      });
+      document.querySelectorAll('dragdrop-container').forEach((container) => {
+        container.addEventListener('dnd:dragleave', containerEventHandler);
+        container.addEventListener('dnd:dropped', containerEventHandler);
+      });
+    });
+
+    // Capture all console logs for evaluation
+    const logPromises = [];
+    page.on('console', msg => logPromises.push(Promise.all(msg.args().map(arg => arg.jsonValue()))));
+
+    // Verify setup
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-setup.png` });
+
+    // Identify the source and target containers.
+    // Check that the source has the text "Child 1" and the target doesn't.
+    const source = page.locator('.grid > dragdrop-container').first();
+    const child1 = page.locator('dragdrop-child').nth(0);
+    await expect(source).toContainText('Child 1');
+
+    // Drag child1 from source to destination.
+    await dispatchTouchEvent(
+      page,
+      'touchstart',
+      'dragdrop-child',
+      [{ pageX: 93, pageY: 96 }],
+    );
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-after-hover.png` });
+
+    // Move the child away from the source
+    // (and other container to prevent unwanted events)
+    await dispatchTouchEvent(
+      page,
+      'touchmove',
+      'dragdrop-child[dragging=true]',
+      [{ pageX: 93, pageY: 100 }],
+    );
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-after-drag.png` });
+    await dispatchTouchEvent(
+      page,
+      'touchmove',
+      'dragdrop-child[dragging=true]',
+      [{ pageX: 93, pageY: 600 }],
+    );
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-after-drag.png` });
+
+    // Move to destination
+    await dispatchTouchEvent(
+      page,
+      'touchmove',
+      'dragdrop-child[dragging=true]',
+      [{ pageX: 652, pageY: 75 }],
+    );
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-after-drag.png` });
+
+    // Drop on the destination
+    await dispatchTouchEvent(
+      page,
+      'touchend',
+      'dragdrop-child[dragging=true]',
+      [],
+      [],
+      [{ pageX: 652, pageY: 75 }],
+    );
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-after-drop.png` });
+
+    const logs = await Promise.all(logPromises);
+    console.log(logs);
+    expect(logs.length).toEqual(4);
+    expect(logs[0]).toEqual(['child-1', 'dnd:dragstart']);
+    expect(logs[1]).toEqual(['container-1', 'dnd:dragleave', 'child-1']);
+    expect(logs[2]).toEqual(['container-4', 'dnd:dropped', 'child-1']);
+    expect(logs[3]).toEqual(['child-1', 'dnd:dragend']);
+  });
+});
