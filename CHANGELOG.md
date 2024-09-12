@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-(no changes yet)
+### Added
+- Add `dnd:dragenter` event.
+
 
 ## [0.3.1]
 
