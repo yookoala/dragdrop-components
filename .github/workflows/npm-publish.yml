@@ -10,6 +10,7 @@ jobs:
   build:
     if: startsWith(github.event.workflow_run.head_commit.message, 'v') && contains(github.event.workflow_run.head_commit.message, '.')
     runs-on: ubuntu-latest
+    continue-on-error: true
     permissions:
       contents: read
       id-token: write
