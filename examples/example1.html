@@ -142,6 +142,11 @@ function logEvents(event) {
 
     document.querySelectorAll('dragdrop-container').forEach((container) => {
 
+        // Event fires when a child element is dragged into the container.
+        container.addEventListener('dnd:dragenter', (event) => {
+            console.debug(container.id, 'dragenter', event.detail.child.id);
+        });
+
         // Event fires when a child element is dragged away from the container.
         container.addEventListener('dnd:dragleave', (event) => {
             console.debug(container.id, 'dragleave', event.detail.child.id);
