@@ -168,6 +168,14 @@ with ordinary mouse drag-drop or touch drag-drop.
 
 #### dragdrop-container
 
+* `dnd:dragenter`
+  * Fires when the dragdrop-child is dragging into the container.
+  * Attributes
+    - target (HTMLElement): the dragdrop-container element.
+    - detail (Object)
+      with attribute:
+      - child (HTMLElement): the dragdrop-child element being dragged.
+
 * `dnd:dragleave`
   * Fires when the dragdrop-child is dragging away from the container.
   * Attributes

@@ -111,6 +111,14 @@ export default class DragDropContainer extends HTMLElement {
         // Indicate a child is dragged from this container.
         this.classList.add('active');
 
+        // Dispatch event to notify the drag enter.
+        this.dispatchEvent(new CustomEvent('dnd:dragenter', {
+            bubbles: false,
+            detail: {
+              child: dragged,
+            },
+        }));
+
         // Redundant class update. Listen to event once and clear the 'active'
         // style.
         //
