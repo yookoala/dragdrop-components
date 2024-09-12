@@ -330,6 +330,31 @@ describe('Nested drag drop', () => {
     const text = await nestedContainer.innerText();
     expect(text).toBe('Child 1\nChild 2');
   });
+
+  test('drag nested container into shadow of itself before drop', async ({ page }, testInfo) => {
+    let step = 0;
+
+    // Identify the source and target containers.
+    // Check that the source has the text "Child 1" and the target doesn't.
+    const source = page.locator('#container-2').first();
+    const destination = page.locator('#container-4').first();
+    //const child4 = page.locator('#child-4').first();
+
+    await expect(source).toContainText('Can drop here');
+    await page.mouse.move(230, 52);
+    await page.mouse.down();
+    await page.mouse.move(230, 62); // drag moving in the container
+    await page.mouse.move(230, 600); // drag away from any container
+    await page.mouse.move(630, 100); // drag onto container 4, within it's own "shadow"
+    await page.mouse.move(630, 120); // wiggle a bit to make sure browser registers
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-setup-2.png` });
+    await page.mouse.up(); // drop it
+    await page.screenshot({ path: `${testInfo.outputPath()}/${step++}-after-drop.png` });
+
+    // Check if child-4 is moved to container-4
+    await expect(source).not.toContainText('Can drop here');
+    await expect(destination).toContainText('Can drop here');
+  });
 });
 
 describe('Touch drag drop', () => {
