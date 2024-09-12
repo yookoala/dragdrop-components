@@ -204,9 +204,6 @@ export default class DragDropContainer extends HTMLElement {
      * @returns {void}
      */
     onDrop(event) {
-        // Only trigger the inner most container's onDrop.
-        event.stopPropagation();
-
         // Clear the active style.
         this.classList.remove('active');
 
@@ -220,11 +217,24 @@ export default class DragDropContainer extends HTMLElement {
         }
 
         if (!this.canAcceptChild(dragged, this.isAncestorOf(dragged))) {
-            if (dragged instanceof DragDropChild) {
+            // If
+            // 1. the dragged item is a DragDropChild, and
+            // 2. this container has an HTMLElement parent, and
+            // 3. the chain of parent elements has no dragdrop-container,
+            // then bounce the dragged element.
+            if (
+                dragged instanceof DragDropChild &&
+                this.parentNode instanceof HTMLElement &&
+                !(this.parentNode.closest('dragdrop-container'))
+            ) {
                 dragged.bounce();
             }
             return;
         }
+
+        // Only stop probagate if the dragged element is acceptable to
+        // the container.
+        event.stopPropagation();
 
         // Dispatch a custom event to notify the drop.
         const droppedEvent = new CustomEvent('dnd:dropped', {

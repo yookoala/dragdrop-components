@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add `dnd:dragenter` event.
 
+### Fixes
+- Fixes [#40](https://github.com/yookoala/dragdrop-components/issues/40)
+  Corner case: dragging into itself
 
 ## [0.3.1]
 
